@@ -1,0 +1,25 @@
+{
+   "textures": [
+      {
+         "textureName": "default",
+         "fileName": "./images/default.jpg"
+      },
+      {
+         "textureName": "container",
+         "fileName": "./images/container.jpg"
+      },
+
+      {
+         "textureName": "concrete",
+         "fileName": "./images/concrete.jpg"
+      },
+      {
+         "textureName": "cotton",
+         "fileName": "./images/cotton.jpg"
+      },
+      {
+         "textureName": "wood",
+         "fileName": "./images/wood.jpg"
+      }
+   ]
+}
