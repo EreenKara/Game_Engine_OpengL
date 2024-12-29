@@ -100,7 +100,7 @@ void Scene::setActiveObject(WorldObject* wo)
     auto it = std::find(this->m_objects.begin(), this->m_objects.end(), wo);
     if(it == m_objects.end())
     {
-        this->m_objects.push_back(wo);
+        // this->m_objects.push_back(wo);
     }
     this->activeObject = wo;
 }
@@ -109,7 +109,7 @@ void Scene::setActivePlayableObject(PlayableObject* po)
     auto it = std::find(playableObjects.begin(),playableObjects.end(),po);
     if(it == playableObjects.end())
     {
-        playableObjects.push_back(po);
+        // playableObjects.push_back(po);
     }
     this->activePlayableObject = po;
 }
@@ -118,7 +118,7 @@ void Scene::setTopCamera(PlayableObject* po)
     auto it = std::find(playableObjects.begin(),playableObjects.end(),po);
     if(it == playableObjects.end())
     {
-        playableObjects.push_back(po);
+        // playableObjects.push_back(po);
     }
     this->topCamera = po;
 }

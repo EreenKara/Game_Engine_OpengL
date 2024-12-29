@@ -76,7 +76,9 @@ json Save::saveSceneAsJson()
     {
         sceneObject["objects"].push_back(saveWorldObjectAsJson(manager->scene->m_objects.at(i)));
     }
-    
+    std::cout<<"save scene object size:"<<scene->m_objects.size()<<std::endl;
+    std::cout<<"save scene playable objectsize :"<<scene->playableObjects.size()<<std::endl;
+
     return sceneObject;
 }
 json Save::saveWorldObjectAsJson(WorldObject* wo)
@@ -154,13 +156,16 @@ Scene* Save::readSceneFromJson(json jsonDataScene)
     Scene* scene = new Scene();
     IdCounter::reset();
     for (auto element : scene->playableObjects) {
+        std::cout<<"calisti:"<<element<<std::endl;
         delete element; // Bellek alanını serbest bırak
     }
     scene->playableObjects.clear();
     for (auto element : scene->m_objects) {
+        std::cout<<"silindi:"<<element<<std::endl;
         delete element; // Bellek alanını serbest bırak
     }
     scene->m_objects.clear();
+
     unsigned int idMax = -1;
     for (int i = 0; i < jsonDataScene["playableObjects"].size(); i++)
     {
@@ -180,24 +185,23 @@ Scene* Save::readSceneFromJson(json jsonDataScene)
     unsigned int activeObjectId = jsonDataScene["activeObject"];
     std::string shaderProgramName = jsonDataScene["shaderProgramName"];
     
-    
+
     scene->setShaderProgramName(shaderProgramName);
     PlayableObject* activePO =  new PlayableObject(IdCounter::getWorldObjectById(activePlayableObjectId));
     PlayableObject* topCamera =  new PlayableObject(IdCounter::getWorldObjectById(topCameraId));
     WorldObject* activeObject = IdCounter::getWorldObjectById(activeObjectId);
     
-    PlayableObject* previousActivePO = scene->getActivePlayableObject();
-    PlayableObject* previousTopCamera = scene->getTopCamera();
-    WorldObject* previousActiveObject = scene->getActiveObject();
+    // PlayableObject* previousActivePO = scene->getActivePlayableObject();
+    // PlayableObject* previousTopCamera = scene->getTopCamera();
+    // WorldObject* previousActiveObject = scene->getActiveObject();
     
     scene->setActivePlayableObject(activePO);
     scene->setTopCamera(topCamera);
     scene->setActiveObject(activeObject);
-    
 
-    scene->removeObject(previousActiveObject);
-    scene->removePlayableObject(previousActivePO);
-    scene->removePlayableObject(previousTopCamera);
+    // scene->removeObject(previousActiveObject);
+    // scene->removePlayableObject(previousActivePO);
+    // scene->removePlayableObject(previousTopCamera);
     
     manager->scene =scene; 
     return scene;
