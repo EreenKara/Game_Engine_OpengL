@@ -6,21 +6,20 @@
 #include <fstream>
 #include <string>
 GameEngine::GameEngine(){
-    m_window.create(800,800);
+    m_window.create(1920,1080);
 
     this->createShaderProgram("shader_program.json");
     this->preload();
-    // if (Save::isThereReadableSaveFile())
-    // {
-    //     m_scene = Save::readFromFile();
-    // }
-    // else
-    // {
-        
-    // }
-    m_scene = new Scene();
-    Save::setSceneToSave(m_scene);
-    
+    if (Save::isThereReadableSaveFile())
+    {
+        // kendi set ediyor içinde
+        m_scene = Save::readFromFileAsJson();
+    }
+    else
+    {
+        m_scene = new Scene();
+        Save::setSceneToSave(m_scene);
+    }
     
     auto renderFunction = std::bind(&Scene::renderFunction, m_scene);
     auto imguiRenderFunction = std::bind(&Scene::imguiRenderFunction, m_scene);

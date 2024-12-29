@@ -15,6 +15,7 @@ private:
     unsigned int m_id;
     static IdCounter* m_Ins;
     IdCounter();
+    static void reset();
     static IdCounter* getInstance();
     static void deleteInstance();
     ~IdCounter();

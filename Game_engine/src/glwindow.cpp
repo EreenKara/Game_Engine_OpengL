@@ -15,16 +15,16 @@ namespace graf
     }
     void GLWindow::staticMouseFcousFunction(GLFWwindow* window, int focused)
     {
-        GLWindow* pWindow = (GLWindow*)glfwGetWindowUserPointer(window);
-        if (focused) {
-            // Pencere odaklandığında imleci devre dışı bırak
-            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-            std::cout << "Pencere odaklandı, fare imleci devre dışı bırakıldı." << std::endl;
-        } else {
-            // Pencere odak kaybettiğinde imleci normal hale getir
-            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-            std::cout << "Pencere odak kaybetti, fare imleci geri yüklendi." << std::endl;
-        }
+        // GLWindow* pWindow = (GLWindow*)glfwGetWindowUserPointer(window);
+        // if (focused) {
+        //     // Pencere odaklandığında imleci devre dışı bırak
+        //     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        //     std::cout << "Pencere odaklandı, fare imleci devre dışı bırakıldı." << std::endl;
+        // } else {
+        //     // Pencere odak kaybettiğinde imleci normal hale getir
+        //     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        //     std::cout << "Pencere odak kaybetti, fare imleci geri yüklendi." << std::endl;
+        // }
     }
 
     void GLWindow::statickeyboardFunction(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -115,6 +115,7 @@ namespace graf
             glfwSwapBuffers(m_window);
             glfwPollEvents();
         }
+        Save::saveToFileAsJson();
     }
     void GLWindow::deleteWindow(){
         glfwDestroyWindow(m_window);

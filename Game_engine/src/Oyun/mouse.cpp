@@ -32,7 +32,7 @@ Mouse::Mouse(){
     m_previousXpos      = -1;
     m_currentYpos      = -1;
     m_previousYpos      = -1;
-    m_sensivity =  0.1f;
+    m_sensivity =  5.0f;
 }
 Mouse::~Mouse(){
 

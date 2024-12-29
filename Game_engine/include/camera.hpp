@@ -3,6 +3,7 @@
 
 #include "glm/glm.hpp"
 #include "transform.hpp"
+class Save;
 
 namespace graf
 {
@@ -10,6 +11,7 @@ namespace graf
     class Camera
     {
     private:
+        friend class ::Save;
         Transform* m_transform;
         float m_fov;
         float m_aspect;
@@ -26,7 +28,7 @@ namespace graf
         Transform* getTransform();
         void turnLR(float angle);
         void turnUD(float angle);
-        Camera(float fovDegree=90.0f,float aspect=1.0f,float near=1.0f,float far=100.0f);
+        Camera(float fovDegree=90.0f,float aspect=1.78f,float near=1.0f,float far=100.0f,Transform* transform = new Transform());
         ~Camera();
     };
 } // namespace graf

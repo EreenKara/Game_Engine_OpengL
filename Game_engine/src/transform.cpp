@@ -16,7 +16,7 @@
 */
 
 
-
+#include <iostream>
 #include "transform.hpp"
 #include<glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/matrix_access.hpp>
@@ -29,16 +29,20 @@ namespace graf
 {
     Transform::Transform(glm::vec3 position,
                          glm::vec3 euler,
+                         glm::vec3 scale,
                          glm::mat4 worldMatrix,
                          glm::mat4 rotationMatrix,
-                         glm::mat4 translateMatrix
+                         glm::mat4 translateMatrix,
+                         glm::mat4 scaleMatrix
                          )
     {
         m_position = position;
         m_euler = euler;
+        m_scale =scale;
         m_worldMatrix = worldMatrix;
         m_rotationMatrix = rotationMatrix;
         m_translateMatrix = translateMatrix;
+        m_scaleMatrix=scaleMatrix;
     }
     Transform::~Transform(){
         
@@ -58,10 +62,16 @@ namespace graf
     glm::vec3 Transform::getLook(){
         return glm::vec3(m_rotationMatrix[2][0],m_rotationMatrix[2][1],m_rotationMatrix[2][2]);
     }
+    void Transform::setScale(const glm::vec3& scale)
+    {
+        m_scale = scale;
+       
+        update();
+    }
     void Transform::update(){
         m_translateMatrix = glm::translate(glm::mat4(1.0f),m_position);
-        glm::extractEulerAngleXYZ(m_rotationMatrix,m_euler.x, m_euler.y, m_euler.z);
-        m_worldMatrix = m_translateMatrix*m_rotationMatrix;
+        m_scaleMatrix = glm::scale(glm::mat4(1),m_scale);
+        m_worldMatrix = m_translateMatrix*m_rotationMatrix*m_scaleMatrix;
     }
     void Transform::rotateGobalX(float angle){
         float radX = glm::radians(angle);
@@ -173,17 +183,41 @@ namespace graf
     glm::vec3 Transform::getEuler(){
         return m_euler;
     }
-    glm::vec3 Transform::setEuler(glm::vec3 euler){
-        m_rotationMatrix = glm::eulerAngleXYZ(euler.x,euler.y,euler.z);
+     void Transform::setEuler(const glm::vec3& euler)
+    {
+        m_euler = euler;
+        float radX =  glm::radians(euler.x);
+        float radY =  glm::radians(euler.y);
+        float radZ =  glm::radians(euler.z);
+
+        auto vecRight   = glm::vec3(1.0f,0.0f,0.0f);
+        auto vecUp      = glm::vec3(0.0f,1.0f,0.0f);
+        auto vecLook    = glm::vec3(0.0f,0.0f,1.0f);
+
+        glm::mat4 mtxRotZ(1);
+        glm::mat4 mtxRotY(1);
+        glm::mat4 mtxRotX(1);
+        mtxRotZ = glm::rotate(glm::mat4(1),radZ,vecLook);
+        if(radY)
+        {
+            mtxRotY = glm::rotate(glm::mat4(1),radY,vecUp);
+        }
+        if(radX)
+        {
+            mtxRotX= glm::rotate(glm::mat4(1),radX,vecRight);
+        }
+        m_rotationMatrix=mtxRotX*mtxRotY*mtxRotZ*glm::mat4(1);
+
         update();
+        
     }
-    glm::vec3 Transform::setEuler(float x, float y, float z){
-        x=x>=2.0f ||x<=-2.0f?std::fmod(x,2.0f):x;
-        y=y>=2.0f ||y<=-2.0f?std::fmod(y,2.0f):y;
-        z=z>=2.0f ||z<=-2.0f?std::fmod(z,2.0f):z;
-        m_rotationMatrix = glm::eulerAngleXYZ(x,y,z);
-        update();
-    }
+    // glm::vec3 Transform::setEuler(float x, float y, float z){
+    //     x=x>=2.0f ||x<=-2.0f?std::fmod(x,2.0f):x;
+    //     y=y>=2.0f ||y<=-2.0f?std::fmod(y,2.0f):y;
+    //     z=z>=2.0f ||z<=-2.0f?std::fmod(z,2.0f):z;
+    //     m_rotationMatrix = glm::eulerAngleXYZ(x,y,z);
+    //     update();
+    // }
     
     void Transform::moveForward(){
         m_position += glm::normalize(getLook());

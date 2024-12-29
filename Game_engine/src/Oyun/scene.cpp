@@ -12,13 +12,21 @@
 #include <fstream>
 #include <algorithm>
 
-Scene::Scene(){
+Scene::Scene(std::string shaderProgramName){
     srand(time(0));
-    this->playableObject = new PlayableObject();
+    this->activePlayableObject = new PlayableObject(new WorldObject());
+    this->topCamera = new PlayableObject(new WorldObject());
+    playableObjects.push_back(activePlayableObject);
+    playableObjects.push_back(topCamera);
     this->shaderProgramName = "TextureShader";
 
-    // SİL 
     glm::vec3 position(0,0,4.0f);
+    glm::vec3 position2(2,0,4.0f);
+    
+    this->activeObject = new WorldObject();
+    this->addObject(this->activeObject);
+    this->activeObject->getTranform()->setPosition(position2);
+    // SİL 
     auto wo =new WorldObject();
     this->addObject(wo);
     wo->getTranform()->setPosition(position);
@@ -43,17 +51,81 @@ void Scene::addObject(WorldObject* worldObject)
     {
         m_objects.push_back(worldObject);
     }
-    return;
 }
 void Scene::removeObject(WorldObject* worldObject)
 {
     auto it = std::find(this->m_objects.begin(), this->m_objects.end(), worldObject);
     if(it != m_objects.end())
     {
+        
+        delete *it;
         this->m_objects.erase(it);
     }
 }
-            
+void Scene::removePlayableObject(PlayableObject* po)
+{
+    auto it = std::find(this->playableObjects.begin(), this->playableObjects.end(), po);
+     if(it != playableObjects.end())
+    {
+        if(*it != activePlayableObject ||*it != topCamera )
+        {
+            delete *it;
+            this->playableObjects.erase(it);
+        }
+    }
+}
+void Scene::addPlayableObject(PlayableObject* po)
+{
+    auto it = std::find(playableObjects.begin(),playableObjects.end(),po);
+    if(it == playableObjects.end())
+    {
+        playableObjects.push_back(po);
+    }
+}
+PlayableObject* Scene::getActivePlayableObject()
+{
+    return this->activePlayableObject;
+}
+PlayableObject* Scene::getTopCamera()
+{
+    return this->topCamera;
+}
+WorldObject* Scene::getActiveObject()
+{
+    return this->activeObject;
+}
+
+void Scene::setActiveObject(WorldObject* wo)
+{
+    auto it = std::find(this->m_objects.begin(), this->m_objects.end(), wo);
+    if(it == m_objects.end())
+    {
+        this->m_objects.push_back(wo);
+    }
+    this->activeObject = wo;
+}
+void Scene::setActivePlayableObject(PlayableObject* po)
+{
+    auto it = std::find(playableObjects.begin(),playableObjects.end(),po);
+    if(it == playableObjects.end())
+    {
+        playableObjects.push_back(po);
+    }
+    this->activePlayableObject = po;
+}
+void Scene::setTopCamera(PlayableObject* po)
+{
+    auto it = std::find(playableObjects.begin(),playableObjects.end(),po);
+    if(it == playableObjects.end())
+    {
+        playableObjects.push_back(po);
+    }
+    this->topCamera = po;
+}
+void Scene::setShaderProgramName(std::string shaderProgramName)
+{
+    this->shaderProgramName=shaderProgramName;
+}
 
 void Scene::renderFunction(){
     glClearColor(0.0f, 0.4f, 0.7f, 1.0f);
@@ -63,12 +135,12 @@ void Scene::renderFunction(){
     shader->use();
     for (size_t i = 0; i < m_objects.size(); i++)
     {
-        this->drawObject(m_objects.at(i),this->playableObject,shader);
+        this->drawObject(m_objects.at(i),this->activePlayableObject,shader);
     }
     
 }
 void Scene::mouseFunction(double x, double y){
-    this->playableObject->mouseFunction(x,y);
+    this->activePlayableObject->mouseFunction(x,y);
 
 }
 void Scene::imguiRenderFunction(){
@@ -82,7 +154,7 @@ void Scene::imguiRenderFunction(){
     ImGui::End();
 }
 void Scene::keyboardFunction(int key,int scancode,int action){
-    this->playableObject->keyboardFunction(key,scancode,action);
+    this->activePlayableObject->keyboardFunction(key,scancode,action);
 
     if(true){
         if(key==GLFW_KEY_0 ) ;
@@ -94,15 +166,19 @@ void Scene::keyboardFunction(int key,int scancode,int action){
         }
         if(key==GLFW_KEY_UP)
         {
+            activeObject->getTranform()->moveUp();
         }
         else if(key == GLFW_KEY_DOWN)
         {
+            activeObject->getTranform()->moveDown();
         } 
         else if(key == GLFW_KEY_RIGHT)
         {
+            activeObject->getTranform()->moveRight();
         }
         else if(key == GLFW_KEY_LEFT)
         {
+            activeObject->getTranform()->moveLeft();
         }
     }
 }
@@ -124,7 +200,11 @@ void Scene::drawObject(WorldObject* object,PlayableObject* playableObject, graf:
 
 Scene::~Scene(){
     this->deleteWorldObjects();
-    delete playableObject;
+    for (auto &&po : this->playableObjects)
+    {
+        delete po;
+    }
+    
 }
 void Scene::deleteWorldObjects(){
     for(WorldObject* item : m_objects)

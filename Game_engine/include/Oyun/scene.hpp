@@ -13,17 +13,29 @@ class Scene
 {
 private:
     friend class Save;
-    PlayableObject* playableObject;
+    PlayableObject* activePlayableObject; // ana ekrandaki asıl kamera 
+    PlayableObject* topCamera;
+    std::vector<PlayableObject*> playableObjects;
+    WorldObject* activeObject; // üzerinde değişiklikler yapıalbilecke olan worldobject
     vector<WorldObject*> m_objects;
     std::string shaderProgramName;
     void drawObject(WorldObject* object,PlayableObject* playableObject,graf::ShaderProgram* shaderProgram);
     void deleteWorldObjects();
 public:
-    Scene();
+    Scene(std::string shaderProgramName = "TextureShader");
     void addObject(WorldObject* worldObject);
     void removeObject(WorldObject* worldObject);
+    void addPlayableObject(PlayableObject* po);
+    void removePlayableObject(PlayableObject* po);
     WorldObject* getObject(WorldObject* worldObject);
     WorldObject* getObject(unsigned int id);
+    PlayableObject* getActivePlayableObject();
+    PlayableObject* getTopCamera();
+    WorldObject* getActiveObject();
+    void setActiveObject(WorldObject* wo);
+    void setActivePlayableObject(PlayableObject* po);
+    void setTopCamera(PlayableObject* po);
+    void setShaderProgramName(std::string shaderProgramName);
     void renderFunction();
     void imguiRenderFunction();
     void keyboardFunction(int key,int scancode,int action);

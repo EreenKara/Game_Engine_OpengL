@@ -13,6 +13,13 @@ IdCounter* IdCounter::getInstance()
 
     return m_Ins;
 }
+void IdCounter::reset()
+{
+    auto instance = getInstance();
+    instance->m_id=-1;
+    instance->idToWorldObject.clear();
+}
+
 void IdCounter::deleteInstance(){
     if(getInstance() != nullptr)
         delete getInstance();

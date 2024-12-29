@@ -1,7 +1,9 @@
 #include "playable_object.hpp"
 #include "glwindow.hpp"
 
-PlayableObject::PlayableObject(){
+PlayableObject::PlayableObject(const WorldObject* wo):
+                               WorldObject(*wo){
+
     movementSpeed = 0.1f;
     m_mouse=new Mouse();
     m_camera =new graf::Camera();
@@ -66,6 +68,22 @@ void PlayableObject::mouseFunction(double x, double y){
         m_mouse->setCurrentYpos(y);    
     }
 }
+void PlayableObject::setMovementSpeed(double movementSpeed)
+{
+    this->movementSpeed= movementSpeed;
+}
+void PlayableObject::setCameraSpeed(double cameraSpeed)
+{
+    this->cameraSpeed= cameraSpeed;
+}
+void PlayableObject::setCamera(graf::Camera* camera)
+{
+    m_camera= camera;
+}
+
+
+
+
 PlayableObject::~PlayableObject(){
     delete m_mouse;
     delete m_camera;

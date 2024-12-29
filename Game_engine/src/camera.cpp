@@ -5,13 +5,13 @@
 namespace graf
 {
     
-    Camera::Camera(float fovDegree, float aspect, float near, float far)
+    Camera::Camera(float fovDegree, float aspect, float near, float far,Transform* transform)
     {
-        m_transform = new Transform();
         m_fov=glm::radians(fovDegree);
         m_aspect=aspect;
         m_near=near;
         m_far=far;
+        m_transform = transform;
         m_projectionMatrix= glm::perspectiveLH(m_fov,m_aspect,m_near,m_far);
     }
 
@@ -40,6 +40,7 @@ namespace graf
         auto euler = m_transform->getEuler();
         euler.y+=radians;
         m_transform->setEuler(euler);
+
     }
     // TURN UP OR DOWN
     void Camera::turnUD(float angle)// TURN LEFT OR RIGHTturnUD(float angle)

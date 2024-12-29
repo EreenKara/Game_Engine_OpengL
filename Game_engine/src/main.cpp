@@ -20,6 +20,13 @@
    ortak va batch renderin bakabilrisin. draw object içerisinde. 
 
    shader program'ı sildim gameengine'den bu yüzden scene'i felna ona göre ayarla.
+
+   
+   
+   
+   mobjects içerisinde silinen şeye ulaşmaya çalışyıor hata veriyor.
+   
+   
 */
 
 
