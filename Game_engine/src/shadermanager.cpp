@@ -21,16 +21,14 @@ namespace graf
         }
         return m_Ins;
     }
-    void ShaderManager::addShaderFromFile(const std::string& fileName)
+    void ShaderManager::addShaderFromFile(nlohmann::json jsonData)
     {
         auto manager = getInstance();
-        std::ifstream file("./shaders/"+fileName);
-        auto data = nlohmann::json::parse(file);
-        
-        std::string programName = data["ProgramName"].get<std::string>();        
-        std::string vertexShaderName = data["VertexShader"].get<std::string>();        
-        std::string fragmentShaderName = data["FragmentShader"].get<std::string>();        
-        auto uniform = data["Uniforms"];        
+
+        std::string programName = jsonData["ProgramName"].get<std::string>();        
+        std::string vertexShaderName = jsonData["VertexShader"].get<std::string>();        
+        std::string fragmentShaderName = jsonData["FragmentShader"].get<std::string>();        
+        auto uniform = jsonData["Uniforms"];        
 
 
         graf::ShaderProgram* shaderProgram = new graf::ShaderProgram();

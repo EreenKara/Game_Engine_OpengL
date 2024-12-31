@@ -37,8 +37,14 @@ GameEngine::GameEngine(){
 }
 void GameEngine::createShaderProgram(const std::string& fileName){
 
-    graf::ShaderManager::addShaderFromFile(fileName);
+    std::ifstream file("./shaders/"+fileName);
+    auto data = nlohmann::json::parse(file);
     
+    for (int i = 0; i < data["shaders"].size(); i++)
+    {
+        graf::ShaderManager::addShaderFromFile(data["shaders"][i]);
+    }
+
 }
 void GameEngine::preload()
 {

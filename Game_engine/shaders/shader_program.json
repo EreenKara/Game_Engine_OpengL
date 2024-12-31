@@ -1,11 +1,26 @@
 {
-   "ProgramName": "TextureShader",
-   "VertexShader": "vertex.glsl",
-   "FragmentShader": "fragment.glsl",
-   "Uniforms": [
+   "shaders": [
       {
-         "Name": "uWorldTransform",
-         "Type": "mat4"
+         "ProgramName": "TextureShader",
+         "VertexShader": "vertex.glsl",
+         "FragmentShader": "fragment.glsl",
+         "Uniforms": [
+            {
+               "Name": "uWorldTransform",
+               "Type": "mat4"
+            }
+         ]
+      },
+      {
+         "ProgramName": "WhiteShader",
+         "VertexShader": "vertex.glsl",
+         "FragmentShader": "fragmentWhite.glsl",
+         "Uniforms": [
+            {
+               "Name": "uWorldTransform",
+               "Type": "mat4"
+            }
+         ]
       }
    ]
 }

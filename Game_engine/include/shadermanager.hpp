@@ -2,6 +2,7 @@
 #define shadermanager_hpp
 #include "string"
 #include "unordered_map"
+#include "nlohmann/json.hpp"
 #include "shaderprogram.hpp"
 namespace graf
 {
@@ -14,7 +15,7 @@ namespace graf
         std::unordered_map<std::string,ShaderProgram*> m_shaderMap;
     public:
         static ShaderProgram* getShaderProgram(const std::string& programName);
-        static void addShaderFromFile(const std::string& fileName);
+        static void addShaderFromFile(nlohmann::json jsonData);
         ~ShaderManager();
     };
     
