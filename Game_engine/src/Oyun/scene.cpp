@@ -11,11 +11,18 @@
 #include <ctime>   // srand için gerekli
 #include <fstream>
 #include <algorithm>
+#include "settings.hpp"
 
 Scene::Scene(std::string shaderProgramName){
     srand(time(0));
     this->activePlayableObject = new PlayableObject(new WorldObject());
+    float aspect = (float)Settings::getScreenWidth()/Settings::getScreenHeight();
+    this->activePlayableObject->getCamera()->setAspect(aspect);
+    
     this->topCamera = new PlayableObject(new WorldObject());
+    aspect = (float)Settings::getScreenTopCameraWidth()/Settings::getScreenTopCameraHeight();
+    this->topCamera->getCamera()->setAspect(aspect);
+
     playableObjects.push_back(activePlayableObject);
     playableObjects.push_back(topCamera);
     this->shaderProgramName = "TextureShader";
@@ -130,12 +137,20 @@ void Scene::setShaderProgramName(std::string shaderProgramName)
 void Scene::renderFunction(){
     glClearColor(0.0f, 0.4f, 0.7f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+    glViewport(0,0,Settings::getScreenWidth(),Settings::getScreenHeight());
 
     auto shader = graf::ShaderManager::getShaderProgram(shaderProgramName);
     shader->use();
     for (size_t i = 0; i < m_objects.size(); i++)
     {
         this->drawObject(m_objects.at(i),this->activePlayableObject,shader);
+    }
+
+
+    glViewport(Settings::getScreenWidth() - Settings::getScreenTopCameraWidth(), Settings::getScreenHeight() - Settings::getScreenTopCameraHeight(), Settings::getScreenTopCameraWidth(), Settings::getScreenTopCameraHeight());
+    for (size_t i = 0; i < m_objects.size(); i++)
+    {
+        this->drawObject(m_objects.at(i),this->topCamera,shader);
     }
     
 }
@@ -163,6 +178,17 @@ void Scene::keyboardFunction(int key,int scancode,int action){
 
         if(key==GLFW_KEY_SPACE && action==GLFW_PRESS)
         {
+            // if(this->activePlayableObject == this->playableObjects.at(0))
+            // {
+            //     this->activePlayableObject = this->playableObjects.at(1);
+            //     this->topCamera = this->playableObjects.at(0);
+            // }
+            // else
+            // {
+            //     this->activePlayableObject == this->playableObjects.at(0);
+            //     this->topCamera = this->playableObjects.at(1);
+            // }
+                
         }
         if(key==GLFW_KEY_UP)
         {

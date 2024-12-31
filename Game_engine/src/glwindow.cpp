@@ -115,7 +115,7 @@ namespace graf
             glfwSwapBuffers(m_window);
             glfwPollEvents();
         }
-        Save::saveToFileAsJson();
+        // Save::saveToFileAsJson();
     }
     void GLWindow::deleteWindow(){
         glfwDestroyWindow(m_window);

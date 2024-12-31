@@ -49,6 +49,7 @@ set(Project_Source_Files
             ${Project_Src_Dir}/Oyun/save.cpp
             ${Project_Src_Dir}/Oyun/idcounter.cpp
             ${Project_Src_Dir}/Oyun/playable_object.cpp
+            ${Project_Src_Dir}/Oyun/settings.cpp
             ${ImGui_Source_files}                              
     )
 

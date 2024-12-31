@@ -5,21 +5,26 @@
 #include "nlohmann/json.hpp"
 #include <fstream>
 #include <string>
+#include "settings.hpp"
 GameEngine::GameEngine(){
-    m_window.create(1920,1080);
+    Settings::setScreenWidth(1920);
+    Settings::setScreenHeight(1080);
+    Settings::setScreenTopCameraWidth(500);
+    Settings::setScreenTopCameraHeight(400);
+    m_window.create(Settings::getScreenWidth(),Settings::getScreenHeight());
 
     this->createShaderProgram("shader_program.json");
     this->preload();
-    if (Save::isThereReadableSaveFile())
-    {
-        // kendi set ediyor içinde
-        m_scene = Save::readFromFileAsJson();
-    }
-    else
-    {
+    // if (Save::isThereReadableSaveFile())
+    // {
+    //     // kendi set ediyor içinde
+    //     m_scene = Save::readFromFileAsJson();
+    // }
+    // else
+    // {
         m_scene = new Scene();
         Save::setSceneToSave(m_scene);
-    }
+    // }
     
     auto renderFunction = std::bind(&Scene::renderFunction, m_scene);
     auto imguiRenderFunction = std::bind(&Scene::imguiRenderFunction, m_scene);
