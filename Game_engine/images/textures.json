@@ -20,6 +20,14 @@
       {
          "textureName": "wood",
          "fileName": "./images/wood.jpg"
+      },
+      {
+         "textureName": "grass",
+         "fileName": "./images/grass.jpg"
+      },
+      {
+         "textureName": "wall",
+         "fileName": "./images/wall.jpg"
       }
    ]
 }

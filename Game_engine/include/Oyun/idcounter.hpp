@@ -9,25 +9,25 @@ class IdCounter
 private:
     friend class Save;
     friend class WorldObject;
-    static void setId(unsigned int id);
-    static void setWorldObjectForId(unsigned int id, WorldObject* worldObject);
+    static void setId(int id);
+    static void setWorldObjectForId(int id, WorldObject* worldObject);
     // id -1 ise hiçbir obje başlatılmamış
-    unsigned int m_id;
+    int m_id;
     static IdCounter* m_Ins;
     IdCounter();
     static void reset();
     static IdCounter* getInstance();
     static void deleteInstance();
     ~IdCounter();
-    std::unordered_map<unsigned int, WorldObject*> idToWorldObject;
+    std::unordered_map<int, WorldObject*> idToWorldObject;
 public:
     // en son verilen id
-    static unsigned int getCurrentID();
+    static int getCurrentID();
     // sıradaki yaratılan obejeye verilecek id
-    static unsigned int nextID(WorldObject* wo);
+    static int nextID(WorldObject* wo);
     // verieln id'ye karşılık herheangi bir obje var mı?
-    static bool idInUse(unsigned int id);
-    static WorldObject* getWorldObjectById(unsigned int id);
+    static bool idInUse(int id);
+    static WorldObject* getWorldObjectById(int id);
 };
 
 

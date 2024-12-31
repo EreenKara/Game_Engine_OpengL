@@ -5,7 +5,7 @@ PlayableObject::PlayableObject(const WorldObject* wo):
                                WorldObject(*wo){
 
     movementSpeed = 0.1f;
-    cameraSpeed= 5.0f;
+    cameraSpeed= 0.1f;
     m_mouse=new Mouse();
     m_camera =new graf::Camera();
 }

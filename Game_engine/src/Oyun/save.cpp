@@ -165,7 +165,7 @@ Scene* Save::readSceneFromJson(json jsonDataScene)
     }
     scene->m_objects.clear();
 
-    unsigned int idMax = -1;
+    int idMax = -1;
     for (int i = 0; i < jsonDataScene["playableObjects"].size(); i++)
     {
         PlayableObject* po = readPlayableObjectFromJson(jsonDataScene["playableObjects"][i]);
@@ -179,9 +179,9 @@ Scene* Save::readSceneFromJson(json jsonDataScene)
         scene->addObject(wo);
     }
     IdCounter::setId(idMax);
-    unsigned int activePlayableObjectId = jsonDataScene["activePlayableObject"];
-    unsigned int topCameraId = jsonDataScene["topCamera"];
-    unsigned int activeObjectId = jsonDataScene["activeObject"];
+   int activePlayableObjectId = jsonDataScene["activePlayableObject"];
+   int topCameraId = jsonDataScene["topCamera"];
+   int activeObjectId = jsonDataScene["activeObject"];
     
 
     PlayableObject* activePO =  new PlayableObject(IdCounter::getWorldObjectById(activePlayableObjectId));
@@ -206,7 +206,7 @@ Scene* Save::readSceneFromJson(json jsonDataScene)
 WorldObject* Save::readWorldObjectFromJson(json jsonDataWO)
 {
 
-    unsigned int id = jsonDataWO["id"];
+    int id = jsonDataWO["id"];
     graf::Transform* transform = readTransformFromJson(jsonDataWO["transform"]);
     graf::ShapeTypes shapeType = static_cast<graf::ShapeTypes>(jsonDataWO["shapeType"]);
     std::string textureName = jsonDataWO["textureName"];

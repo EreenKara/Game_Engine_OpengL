@@ -21,6 +21,33 @@
                "Type": "mat4"
             }
          ]
+      },
+      {
+         "ProgramName": "TextureRepeatShader",
+         "VertexShader": "vertexRepeat.glsl",
+         "FragmentShader": "fragment.glsl",
+         "Uniforms": [
+            {
+               "Name": "uWorldTransform",
+               "Type": "mat4"
+            }
+         ]
+      },
+      {
+         "ProgramName": "KenarShader",
+         "VertexShader": "./kenar/vertex.glsl",
+         "GeometryShader": "./kenar/geometry.glsl",
+         "FragmentShader": "./kenar/fragment.glsl",
+         "Uniforms": [
+            {
+               "Name": "uWorldTransform",
+               "Type": "mat4"
+            },
+            {
+               "Name": "inverseProjectionViewMatrix",
+               "Type": "mat4"
+            }
+         ]
       }
    ]
 }

@@ -36,18 +36,16 @@ namespace graf
     // TURN LEFT OR RIGHT
     void Camera::turnLR(float angle)
     {
-        float radians = glm::radians(angle);
         auto euler = m_transform->getEuler();
-        euler.y+=radians;
+        euler.y+=angle;
         m_transform->setEuler(euler);
 
     }
     // TURN UP OR DOWN
     void Camera::turnUD(float angle)// TURN LEFT OR RIGHTturnUD(float angle)
     {
-        float radians = glm::radians(angle);
         auto euler = m_transform->getEuler();
-        euler.x+=radians;
+        euler.x+=angle;
         m_transform->setEuler(euler);
     }
     void Camera::setFov(float fovDegree)

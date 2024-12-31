@@ -9,7 +9,7 @@
 #include "idcounter.hpp"
 #include "shadermanager.hpp"
 
-WorldObject::WorldObject(unsigned int id,
+WorldObject::WorldObject(int id,
                          std::string textureName,
                          graf::ShapeTypes shapeType,
                          std::string shaderProgramName,

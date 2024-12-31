@@ -21,7 +21,7 @@ protected:
     glm::vec2   textureRepeat;
     unsigned int fillType;
 public:
-    WorldObject(unsigned int id=-1,
+    WorldObject(int id=-1,
                 std::string textureName="container",
                 graf::ShapeTypes shapeType=graf::ShapeTypes::Cube,
                 std::string shaderProgramName= "TextureShader",

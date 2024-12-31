@@ -182,7 +182,8 @@ namespace graf
     }
      void Transform::setEuler(const glm::vec3& euler)
     {
-        m_euler = euler;
+            m_euler = euler;
+        m_rotationMatrix = glm::mat4(1);
         float radX =  glm::radians(euler.x);
         float radY =  glm::radians(euler.y);
         float radZ =  glm::radians(euler.z);
@@ -191,20 +192,35 @@ namespace graf
         auto vecUp      = glm::vec3(0.0f,1.0f,0.0f);
         auto vecLook    = glm::vec3(0.0f,0.0f,1.0f);
 
-        glm::mat4 mtxRotZ(1);
-        glm::mat4 mtxRotY(1);
-        glm::mat4 mtxRotX(1);
-        mtxRotZ = glm::rotate(glm::mat4(1),radZ,vecLook);
+        glm::mat4 mtxRotZ = glm::rotate(glm::mat4(1),radZ,vecLook);
+
+        vecRight      = mtxRotZ*glm::vec4(vecRight,0.0f);
+        vecUp         = mtxRotZ*glm::vec4(vecUp,0.0f);
+      
         if(radY)
         {
-            mtxRotY = glm::rotate(glm::mat4(1),radY,vecUp);
+            glm::mat4 mtxRotY = glm::rotate(glm::mat4(1),radY,vecUp);
+
+            vecRight    = mtxRotY*glm::vec4(vecRight,0.0f);
+            vecLook     = mtxRotY*glm::vec4(vecLook,0.0f);
         }
+
         if(radX)
         {
-            mtxRotX= glm::rotate(glm::mat4(1),radX,vecRight);
-        }
-        m_rotationMatrix=mtxRotX*mtxRotY*mtxRotZ*glm::mat4(1);
+            glm::mat4 mtxRotX = glm::rotate(glm::mat4(1),radX,vecRight);
 
+            vecLook    = mtxRotX*glm::vec4(vecLook,0.0f);
+            vecUp       = mtxRotX*glm::vec4(vecUp,0.0f);
+
+        }
+        vecRight    = glm::normalize(vecRight);
+        vecUp       = glm::normalize(vecUp);
+        vecLook     = glm::normalize(vecLook);
+        
+        m_rotationMatrix[0] = glm::vec4(vecRight,0.0f);
+        m_rotationMatrix[1] = glm::vec4(vecUp,0.0f);
+        m_rotationMatrix[2] = glm::vec4(vecLook,0.0f);
+        
         update();
         
     }

@@ -12,17 +12,18 @@
 #include <fstream>
 #include <algorithm>
 #include "settings.hpp"
+#include "idcounter.hpp"
 
 Scene::Scene(){
     srand(time(0));
     this->cursor = new Cursor(new WorldObject(0,"container",graf::ShapeTypes::Pyramid,"WhiteShader"));
 
 
-    this->activePlayableObject = new PlayableObject(new WorldObject());
+    this->activePlayableObject = new PlayableObject(new WorldObject(-1,"cotton"));
     float aspect = (float)Settings::getScreenWidth()/Settings::getScreenHeight();
     this->activePlayableObject->getCamera()->setAspect(aspect);
     
-    this->topCamera = new PlayableObject(new WorldObject());
+    this->topCamera = new PlayableObject(new WorldObject(-1,"concrete"));
     aspect = (float)Settings::getScreenTopCameraWidth()/Settings::getScreenTopCameraHeight();
     this->topCamera->getCamera()->setAspect(aspect);
 
@@ -34,11 +35,11 @@ Scene::Scene(){
     glm::vec3 position(0,0,4.0f);
     glm::vec3 position2(2,0,4.0f);
     
-    this->activeObject = new WorldObject();
+    this->activeObject = new WorldObject(-1,"wall");
     this->addObject(this->activeObject);
     this->activeObject->getTranform()->setPosition(position2);
     // SİL 
-    auto wo =new WorldObject();
+    auto wo =new WorldObject(-1,"grass");
     this->addObject(wo);
     wo->getTranform()->setPosition(position);
 }
@@ -146,6 +147,7 @@ void Scene::renderFunction(){
         this->drawObject(m_objects.at(i),this->activePlayableObject);
     }
 
+    glClear(GL_DEPTH_BUFFER_BIT); 
 
     glViewport(Settings::getScreenWidth() - Settings::getScreenTopCameraWidth(), Settings::getScreenHeight() - Settings::getScreenTopCameraHeight(), Settings::getScreenTopCameraWidth(), Settings::getScreenTopCameraHeight());
     this->drawObject(this->cursor,this->topCamera);
@@ -166,46 +168,96 @@ void Scene::imguiRenderFunction(){
     ImGui::Text("Left-Handed");
     // graf::printMatrix(m_mtxProjection);
 
-    graf::ShapeCreator::create();
     ImGui::End();
 }
 void Scene::keyboardFunction(int key,int scancode,int action){
     this->activePlayableObject->keyboardFunction(key,scancode,action);
-
+    float angle = 5.0f;
     if(true){
         if(key==GLFW_KEY_0 ) ;
         else if(key==GLFW_KEY_1) ;
 
-
+        if(key==GLFW_KEY_O && action==GLFW_PRESS)
+        {
+            auto scale = activeObject->getTranform()->getScale();
+            scale.x +=1;
+            scale.y +=1;
+            scale.z +=1;
+            activeObject->getTranform()->setScale(scale);
+        }
+        if(key==GLFW_KEY_P && action==GLFW_PRESS)
+        {
+            auto scale = activeObject->getTranform()->getScale();
+            scale.x -=1;
+            scale.y -=1;
+            scale.z -=1;
+            activeObject->getTranform()->setScale(scale);
+        }
+        if(key==GLFW_KEY_E )
+        {
+            auto euler = activeObject->getTranform()->getEuler();
+            euler.y+=angle;
+            activeObject->getTranform()->setEuler(euler);
+        }
+        if(key==GLFW_KEY_Q )
+        {
+            auto euler = activeObject->getTranform()->getEuler();
+            euler.y-=angle;
+            activeObject->getTranform()->setEuler(euler);
+        }
+        if(key==GLFW_KEY_Y )
+        {
+            auto euler = activeObject->getTranform()->getEuler();
+            euler.x+=angle;
+            activeObject->getTranform()->setEuler(euler);
+        }
+        if(key==GLFW_KEY_H )
+        {
+            auto euler = activeObject->getTranform()->getEuler();
+            euler.x-=angle;
+            activeObject->getTranform()->setEuler(euler);
+        }
+        if(key==GLFW_KEY_U )
+        {
+            auto euler = activeObject->getTranform()->getEuler();
+            euler.z+=angle;
+            activeObject->getTranform()->setEuler(euler);
+        }
+        if(key==GLFW_KEY_J )
+        {
+            auto euler = activeObject->getTranform()->getEuler();
+            euler.z-=angle;
+            activeObject->getTranform()->setEuler(euler);
+        }
         if(key==GLFW_KEY_SPACE && action==GLFW_PRESS)
         {
-            // if(this->activePlayableObject == this->playableObjects.at(0))
-            // {
-            //     this->activePlayableObject = this->playableObjects.at(1);
-            //     this->topCamera = this->playableObjects.at(0);
-            // }
-            // else
-            // {
-            //     this->activePlayableObject == this->playableObjects.at(0);
-            //     this->topCamera = this->playableObjects.at(1);
-            // }
-                
+            auto wo = new WorldObject(-1,"container",graf::ShapeTypes::Square,"TextureShader");
+            addObject(wo);
+            setActiveObject(wo);
         }
-        if(key==GLFW_KEY_UP)
+        if(key==GLFW_KEY_UP && action==GLFW_PRESS)
         {
             activeObject->getTranform()->moveUp();
         }
-        else if(key == GLFW_KEY_DOWN)
+        else if(key == GLFW_KEY_DOWN && action==GLFW_PRESS)
         {
             activeObject->getTranform()->moveDown();
         } 
-        else if(key == GLFW_KEY_RIGHT)
+        else if(key == GLFW_KEY_RIGHT && action==GLFW_PRESS)
         {
             activeObject->getTranform()->moveRight();
         }
-        else if(key == GLFW_KEY_LEFT)
+        else if(key == GLFW_KEY_LEFT && action==GLFW_PRESS)
         {
             activeObject->getTranform()->moveLeft();
+        }
+        else if(key == GLFW_KEY_M && action==GLFW_PRESS)
+        {
+            activeObject->getTranform()->moveForward();
+        }
+        else if(key == GLFW_KEY_N && action==GLFW_PRESS)
+        {
+            activeObject->getTranform()->moveBackward();
         }
     }
 }
