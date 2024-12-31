@@ -32,6 +32,7 @@ namespace graf{
         glm::vec3 getUp();
         glm::vec3 getRight();
         glm::vec3 getPosition();
+        glm::vec3 getScale();
         glm::vec3 getEuler();
         glm::mat4 getWorldMatrix();
         glm::mat4 getRotationMatrix();

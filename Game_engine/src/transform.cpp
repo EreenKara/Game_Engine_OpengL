@@ -165,6 +165,10 @@ namespace graf
     glm::vec3 Transform::getPosition(){
         return m_position;
     }
+    glm::vec3 Transform::getScale()
+    {
+        return m_scale;
+    }
     // Transform MAtrix
     glm::mat4 Transform::getWorldMatrix(){
         return m_worldMatrix;

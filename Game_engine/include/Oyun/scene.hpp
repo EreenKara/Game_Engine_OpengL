@@ -8,6 +8,7 @@
 #include "playable_object.hpp"
 #include "save.hpp"
 #include "shadermanager.hpp"
+#include "cursor.hpp"
 class WorldObject;
 class Scene
 {
@@ -18,6 +19,10 @@ private:
     std::vector<PlayableObject*> playableObjects;
     WorldObject* activeObject; // üzerinde değişiklikler yapıalbilecke olan worldobject
     vector<WorldObject*> m_objects;
+    Cursor* cursor;
+
+
+    
     void drawObject(WorldObject* object,PlayableObject* playableObject);
     void deleteWorldObjects();
 public:

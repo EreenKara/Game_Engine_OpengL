@@ -80,6 +80,7 @@ void WorldObject::removeChildObject(WorldObject* worldObject)
     }
 
 }
+
 glm::vec2& WorldObject::getTextureRepeat()
 {
     return (this->textureRepeat);

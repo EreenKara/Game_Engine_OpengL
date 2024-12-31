@@ -43,6 +43,10 @@ unsigned int IdCounter::getCurrentID()
 unsigned int IdCounter::nextID(WorldObject* wo)
 {
     auto instance = getInstance();
+    if(instance->m_id<10)
+    {
+        instance->m_id = 10; //reserved for me
+    }
     instance->m_id+=1;
     instance->idToWorldObject[instance->m_id] = wo;
     return instance->m_id;

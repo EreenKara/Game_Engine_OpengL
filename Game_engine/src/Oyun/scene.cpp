@@ -15,6 +15,9 @@
 
 Scene::Scene(){
     srand(time(0));
+    this->cursor = new Cursor(new WorldObject(0,"container",graf::ShapeTypes::Pyramid,"WhiteShader"));
+
+
     this->activePlayableObject = new PlayableObject(new WorldObject());
     float aspect = (float)Settings::getScreenWidth()/Settings::getScreenHeight();
     this->activePlayableObject->getCamera()->setAspect(aspect);
@@ -25,6 +28,8 @@ Scene::Scene(){
 
     playableObjects.push_back(activePlayableObject);
     playableObjects.push_back(topCamera);
+    
+
 
     glm::vec3 position(0,0,4.0f);
     glm::vec3 position2(2,0,4.0f);
@@ -134,6 +139,8 @@ void Scene::renderFunction(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
     glViewport(0,0,Settings::getScreenWidth(),Settings::getScreenHeight());
 
+    this->cursor->calculateCursorPosition(this->activeObject);
+    this->drawObject(this->cursor,this->activePlayableObject);
     for (size_t i = 0; i < m_objects.size(); i++)
     {
         this->drawObject(m_objects.at(i),this->activePlayableObject);
@@ -141,6 +148,7 @@ void Scene::renderFunction(){
 
 
     glViewport(Settings::getScreenWidth() - Settings::getScreenTopCameraWidth(), Settings::getScreenHeight() - Settings::getScreenTopCameraHeight(), Settings::getScreenTopCameraWidth(), Settings::getScreenTopCameraHeight());
+    this->drawObject(this->cursor,this->topCamera);
     for (size_t i = 0; i < m_objects.size(); i++)
     {
         this->drawObject(m_objects.at(i),this->topCamera);
@@ -216,6 +224,7 @@ void Scene::drawObject(WorldObject* object,PlayableObject* playableObject){
     va->unbind();
     // ortak va batch renderin bakabilrisin.
 }
+
 
 
 

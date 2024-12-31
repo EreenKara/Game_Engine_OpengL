@@ -50,6 +50,7 @@ set(Project_Source_Files
             ${Project_Src_Dir}/Oyun/idcounter.cpp
             ${Project_Src_Dir}/Oyun/playable_object.cpp
             ${Project_Src_Dir}/Oyun/settings.cpp
+            ${Project_Src_Dir}/Oyun/cursor.cpp
             ${ImGui_Source_files}                              
     )
 
