@@ -166,7 +166,7 @@ void Scene::imguiRenderFunction(){
     ImGui::Text("Left-Handed");
     // graf::printMatrix(m_mtxProjection);
 
-    
+    graf::ShapeCreator::create();
     ImGui::End();
 }
 void Scene::keyboardFunction(int key,int scancode,int action){
