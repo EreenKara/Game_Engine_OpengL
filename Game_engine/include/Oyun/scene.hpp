@@ -18,11 +18,10 @@ private:
     std::vector<PlayableObject*> playableObjects;
     WorldObject* activeObject; // üzerinde değişiklikler yapıalbilecke olan worldobject
     vector<WorldObject*> m_objects;
-    std::string shaderProgramName;
-    void drawObject(WorldObject* object,PlayableObject* playableObject,graf::ShaderProgram* shaderProgram);
+    void drawObject(WorldObject* object,PlayableObject* playableObject);
     void deleteWorldObjects();
 public:
-    Scene(std::string shaderProgramName = "TextureShader");
+    Scene();
     void addObject(WorldObject* worldObject);
     void removeObject(WorldObject* worldObject);
     void addPlayableObject(PlayableObject* po);
@@ -35,7 +34,6 @@ public:
     void setActiveObject(WorldObject* wo);
     void setActivePlayableObject(PlayableObject* po);
     void setTopCamera(PlayableObject* po);
-    void setShaderProgramName(std::string shaderProgramName);
     void renderFunction();
     void imguiRenderFunction();
     void keyboardFunction(int key,int scancode,int action);

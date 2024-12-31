@@ -113,7 +113,14 @@ namespace graf
             glUniform3f(varLocation,value.x,value.y,value.z);
         }
         
-    }      
+    }    
+    void ShaderProgram::setVec2(const string &varName, const glm::vec2 &value)
+    {
+        if(m_uniforms.count(varName)>0)
+        {
+            glUniform2f( m_uniforms[varName],value.x,value.y);
+        }
+    }  
     void ShaderProgram::setMat4(const string& varName,const glm::mat4& value)
     {
         if(m_uniforms.count(varName)>=0)

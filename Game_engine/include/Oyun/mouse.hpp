@@ -8,7 +8,6 @@ private:
     double m_previousXpos;
     double m_currentYpos;
     double m_previousYpos;
-    double m_sensivity;
 public:
     double getCurrentXpos();
     void setCurrentXpos(double xpos);
@@ -16,8 +15,6 @@ public:
     double getCurrentYpos();
     void setCurrentYpos(double ypos);
     double getPreviousYpos();
-    double getSensivity();
-    double setSensivity(double sensivity);
     Mouse();
     ~Mouse();
 };

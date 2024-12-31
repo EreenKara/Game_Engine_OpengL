@@ -29,20 +29,13 @@ namespace graf
 {
     Transform::Transform(glm::vec3 position,
                          glm::vec3 euler,
-                         glm::vec3 scale,
-                         glm::mat4 worldMatrix,
-                         glm::mat4 rotationMatrix,
-                         glm::mat4 translateMatrix,
-                         glm::mat4 scaleMatrix
+                         glm::vec3 scale
                          )
     {
         m_position = position;
-        m_euler = euler;
+        setEuler(euler);
         m_scale =scale;
-        m_worldMatrix = worldMatrix;
-        m_rotationMatrix = rotationMatrix;
-        m_translateMatrix = translateMatrix;
-        m_scaleMatrix=scaleMatrix;
+        update();
     }
     Transform::~Transform(){
         

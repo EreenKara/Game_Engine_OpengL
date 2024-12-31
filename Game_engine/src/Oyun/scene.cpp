@@ -13,7 +13,7 @@
 #include <algorithm>
 #include "settings.hpp"
 
-Scene::Scene(std::string shaderProgramName){
+Scene::Scene(){
     srand(time(0));
     this->activePlayableObject = new PlayableObject(new WorldObject());
     float aspect = (float)Settings::getScreenWidth()/Settings::getScreenHeight();
@@ -25,7 +25,6 @@ Scene::Scene(std::string shaderProgramName){
 
     playableObjects.push_back(activePlayableObject);
     playableObjects.push_back(topCamera);
-    this->shaderProgramName = "TextureShader";
 
     glm::vec3 position(0,0,4.0f);
     glm::vec3 position2(2,0,4.0f);
@@ -129,28 +128,22 @@ void Scene::setTopCamera(PlayableObject* po)
     }
     this->topCamera = po;
 }
-void Scene::setShaderProgramName(std::string shaderProgramName)
-{
-    this->shaderProgramName=shaderProgramName;
-}
 
 void Scene::renderFunction(){
     glClearColor(0.0f, 0.4f, 0.7f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
     glViewport(0,0,Settings::getScreenWidth(),Settings::getScreenHeight());
 
-    auto shader = graf::ShaderManager::getShaderProgram(shaderProgramName);
-    shader->use();
     for (size_t i = 0; i < m_objects.size(); i++)
     {
-        this->drawObject(m_objects.at(i),this->activePlayableObject,shader);
+        this->drawObject(m_objects.at(i),this->activePlayableObject);
     }
 
 
     glViewport(Settings::getScreenWidth() - Settings::getScreenTopCameraWidth(), Settings::getScreenHeight() - Settings::getScreenTopCameraHeight(), Settings::getScreenTopCameraWidth(), Settings::getScreenTopCameraHeight());
     for (size_t i = 0; i < m_objects.size(); i++)
     {
-        this->drawObject(m_objects.at(i),this->topCamera,shader);
+        this->drawObject(m_objects.at(i),this->topCamera);
     }
     
 }
@@ -209,13 +202,15 @@ void Scene::keyboardFunction(int key,int scancode,int action){
     }
 }
 
-void Scene::drawObject(WorldObject* object,PlayableObject* playableObject, graf::ShaderProgram* shaderProgram){
+void Scene::drawObject(WorldObject* object,PlayableObject* playableObject){
+    object->getShaderProgram()->use();
     graf::VertexArrayObject* va=graf::ShapeCreator::create(object->getShapeType());
     va->bind();
     glm::mat4 mtxWorld = object->getTranform()->getWorldMatrix();
     auto viewMatrix = playableObject->getCamera()->getViewMatrix();
     auto projectionMatrix = playableObject->getCamera()->getProjectionMatrix();
-    shaderProgram->setMat4("uWorldTransform",projectionMatrix*viewMatrix*mtxWorld);
+    object->getShaderProgram()->setVec2("uTextureRepeat",object->getTextureRepeat());
+    object->getShaderProgram()->setMat4("uWorldTransform",projectionMatrix*viewMatrix*mtxWorld);
     graf::TextureManager::activateTexture(object->getTextureName());
     va->draw();
     va->unbind();

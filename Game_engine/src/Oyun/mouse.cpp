@@ -12,12 +12,6 @@ double Mouse::getPreviousXpos(){
 double Mouse::getPreviousYpos(){
     return m_previousYpos;
 }
-double Mouse::getSensivity(){
-    return m_sensivity;
-}
-double Mouse::setSensivity(double sensivity){
-    m_sensivity=sensivity;
-}
 void Mouse::setCurrentXpos(double xpos){
     m_previousXpos=m_currentXpos;
     m_currentXpos = xpos;
@@ -32,7 +26,6 @@ Mouse::Mouse(){
     m_previousXpos      = -1;
     m_currentYpos      = -1;
     m_previousYpos      = -1;
-    m_sensivity =  5.0f;
 }
 Mouse::~Mouse(){
 

@@ -16,6 +16,7 @@ namespace graf
         void setFloat(const string& varName,float value);
         void setVec4(const string& varName,const glm::vec4& value);
         void setVec3(const string& varName,const glm::vec3& value);
+        void setVec2(const string &varName, const glm::vec2 &value);
         void setMat4(const string& varName,const glm::mat4& value);
         void link();
         void use();

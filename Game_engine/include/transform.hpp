@@ -49,11 +49,7 @@ namespace graf{
         // eğerki scale'i verip scalematrix vermezse felan problem olabilir.
         Transform(glm::vec3 position=glm::vec3(0.0f),
                   glm::vec3 euler = glm::vec3(0.0f),
-                  glm::vec3 scale = glm::vec3(1.0f),
-                  glm::mat4 worldMatrix = glm::mat4(1.0f),
-                  glm::mat4 rotationMatrix = glm::mat4(1.0f),
-                  glm::mat4 translateMatrix = glm::mat4(1.0f),
-                  glm::mat4 scaleMatrix = glm::mat4(1.0f)
+                  glm::vec3 scale = glm::vec3(1.0f)
         );
         ~Transform();
     };

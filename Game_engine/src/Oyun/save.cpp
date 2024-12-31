@@ -64,8 +64,7 @@ json Save::saveSceneAsJson()
         {"topCamera", scene->topCamera->id},
         {"playableObjects", json::array()},
         {"activeObject", scene->activeObject->id},
-        {"objects", json::array()},
-        {"shaderProgramName", scene->shaderProgramName}
+        {"objects", json::array()}
     };
     
     for (int i = 0; i < manager->scene->playableObjects.size(); i++)
@@ -106,11 +105,11 @@ json Save::saveTransformAsJson(graf::Transform* transform)
     jsonData["euler"] = vec3ToJson(transform->m_euler);
     jsonData["scale"] = vec3ToJson(transform->m_scale);
 
-    // glm::mat4 verilerini JSON'e dönüştür
-    jsonData["worldMatrix"] = mat4ToJson(transform->m_worldMatrix);
-    jsonData["scaleMatrix"] = mat4ToJson(transform->m_scaleMatrix);
-    jsonData["rotationMatrix"] = mat4ToJson(transform->m_rotationMatrix);
-    jsonData["translateMatrix"] = mat4ToJson(transform->m_translateMatrix);
+    // // glm::mat4 verilerini JSON'e dönüştür
+    // jsonData["worldMatrix"] = mat4ToJson(transform->m_worldMatrix);
+    // jsonData["scaleMatrix"] = mat4ToJson(transform->m_scaleMatrix);
+    // jsonData["rotationMatrix"] = mat4ToJson(transform->m_rotationMatrix);
+    // jsonData["translateMatrix"] = mat4ToJson(transform->m_translateMatrix);
 
     return jsonData;
 }
@@ -133,7 +132,7 @@ json Save::saveCameraAsJson(graf::Camera* camera)
     jsonData["aspect"] = camera->m_aspect;
     jsonData["near"] = camera->m_near;
     jsonData["far"] = camera->m_far;
-    jsonData["projectionMatrix"] = mat4ToJson(camera->m_projectionMatrix);
+    // jsonData["projectionMatrix"] = mat4ToJson(camera->m_projectionMatrix);
     return jsonData;
 }
 
@@ -183,10 +182,8 @@ Scene* Save::readSceneFromJson(json jsonDataScene)
     unsigned int activePlayableObjectId = jsonDataScene["activePlayableObject"];
     unsigned int topCameraId = jsonDataScene["topCamera"];
     unsigned int activeObjectId = jsonDataScene["activeObject"];
-    std::string shaderProgramName = jsonDataScene["shaderProgramName"];
     
 
-    scene->setShaderProgramName(shaderProgramName);
     PlayableObject* activePO =  new PlayableObject(IdCounter::getWorldObjectById(activePlayableObjectId));
     PlayableObject* topCamera =  new PlayableObject(IdCounter::getWorldObjectById(topCameraId));
     WorldObject* activeObject = IdCounter::getWorldObjectById(activeObjectId);
@@ -244,11 +241,11 @@ graf::Transform* Save::readTransformFromJson(json jsonDataTransform)
     glm::vec3 position = jsonToVec3(jsonDataTransform["position"]);
     glm::vec3 euler = jsonToVec3(jsonDataTransform["euler"]);
     glm::vec3 scale = jsonToVec3(jsonDataTransform["scale"]);
-    glm::mat4 worldMatrix = jsonToMat4(jsonDataTransform["worldMatrix"]) ;
-    glm::mat4 rotationMatrix = jsonToMat4(jsonDataTransform["rotationMatrix"]);
-    glm::mat4 translateMatrix = jsonToMat4(jsonDataTransform["translateMatrix"]);
-    glm::mat4 scaleMatrix = jsonToMat4(jsonDataTransform["scaleMatrix"]) ;
-    graf::Transform* transform= new graf::Transform(position,euler,scale,worldMatrix,rotationMatrix,translateMatrix,scaleMatrix);
+    // glm::mat4 worldMatrix = jsonToMat4(jsonDataTransform["worldMatrix"]) ;
+    // glm::mat4 rotationMatrix = jsonToMat4(jsonDataTransform["rotationMatrix"]);
+    // glm::mat4 translateMatrix = jsonToMat4(jsonDataTransform["translateMatrix"]);
+    // glm::mat4 scaleMatrix = jsonToMat4(jsonDataTransform["scaleMatrix"]) ;
+    graf::Transform* transform= new graf::Transform(position,euler,scale);
     return transform;
 }
 graf::Camera* Save::readCameraFromJson(json jsonDataCamera)
@@ -258,7 +255,7 @@ graf::Camera* Save::readCameraFromJson(json jsonDataCamera)
     float aspect =jsonDataCamera["aspect"] ;
     float near =jsonDataCamera["near"];
     float far =jsonDataCamera["far"] ;
-    glm::mat4 projectionMatrix = jsonToMat4(jsonDataCamera["projectionMatrix"]) ;
+    // glm::mat4 projectionMatrix = jsonToMat4(jsonDataCamera["projectionMatrix"]) ;
     graf::Camera* camera = new graf::Camera(fov,aspect,near,far,transform); 
     return camera;
 }
