@@ -34,10 +34,13 @@
             {
                "Name": "uWorldTransform",
                "Type": "mat4"
+<<<<<<< HEAD
             },
             {
                "Name" :"uTextureRepeat",
                "Type" :"vec2"
+=======
+>>>>>>> 6cd81b1acc66ad1619ef46524d3890d6a234ea51
             }
          ]
       },
