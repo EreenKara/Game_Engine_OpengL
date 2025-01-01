@@ -1,8 +1,7 @@
 #version 330 core
 
-in vec3 geomColor; // Geometry Shader'den gelen renk
-out vec4 outColor; // Çıktı rengi
+out vec4 FragColor; // Çıkış renk
 
 void main() {
-    outColor = vec4(geomColor, 1.0); // Çizgiyi gelen renkle çiz
+    FragColor = vec4(1.0, 1.0, 1.0, 1.0); // Beyaz renk
 }

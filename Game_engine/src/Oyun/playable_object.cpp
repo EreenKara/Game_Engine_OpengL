@@ -9,7 +9,7 @@ PlayableObject::PlayableObject(const WorldObject* wo):
     m_mouse=new Mouse();
     m_camera =new graf::Camera();
     this->shapeType=graf::ShapeTypes::Frustum;
-    // this->shaderProgramName="KenarShader";
+    this->shaderProgramName="KenarShader";
 }
 
 graf::Camera* PlayableObject::getCamera()
