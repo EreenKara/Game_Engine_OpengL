@@ -24,39 +24,41 @@ void IdCounter::deleteInstance(){
     if(getInstance() != nullptr)
         delete getInstance();
 }
-void IdCounter::setId(unsigned int id)
+void IdCounter::setId(int id)
 {
     auto instance = getInstance();
     instance->m_id=id;
 }
-void IdCounter::setWorldObjectForId(unsigned int id, WorldObject* worldObject)
+void IdCounter::setWorldObjectForId(int id, WorldObject* worldObject)
 {
     auto instance = getInstance();
     instance->idToWorldObject[id] = worldObject;
 }
 
-unsigned int IdCounter::getCurrentID()
+int IdCounter::getCurrentID()
 {
     auto instance = getInstance();
     return instance->m_id;   
 }
-unsigned int IdCounter::nextID(WorldObject* wo)
+int IdCounter::nextID(WorldObject* wo)
 {
     auto instance = getInstance();
     if(instance->m_id<10)
     {
         instance->m_id = 10; //reserved for me
     }
-    instance->m_id+=1;
-    instance->idToWorldObject[instance->m_id] = wo;
+    instance->m_id++;
+    if (wo) {
+        instance->idToWorldObject[instance->m_id] = wo;
+    }
     return instance->m_id;
 }
-bool IdCounter::idInUse(unsigned int id)
+bool IdCounter::idInUse(int id)
 {
     auto instance = getInstance();
     return instance->idToWorldObject.count(id)>0 ? true:false;
 }
-WorldObject* IdCounter::getWorldObjectById(unsigned int id)
+WorldObject* IdCounter::getWorldObjectById(int id)
 {
     auto instance = getInstance();
     if(!idInUse(id)) return nullptr;

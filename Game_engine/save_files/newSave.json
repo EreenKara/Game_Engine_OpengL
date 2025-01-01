@@ -1,0 +1,370 @@
+{
+    "activeObject": 12,
+    "activePlayableObject": 11,
+    "objects": [
+        {
+            "fillType": 6914,
+            "id": 12,
+            "shaderProgramName": "TextureShader",
+            "shapeType": 2,
+            "textureName": "container",
+            "textureRepeat": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "transform": {
+                "euler": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "position": {
+                    "x": 3.0,
+                    "y": 0.0,
+                    "z": 4.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                }
+            }
+        },
+        {
+            "fillType": 6914,
+            "id": 13,
+            "shaderProgramName": "TextureShader",
+            "shapeType": 2,
+            "textureName": "container",
+            "textureRepeat": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "transform": {
+                "euler": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 4.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                }
+            }
+        },
+        {
+            "fillType": 6914,
+            "id": 14,
+            "shaderProgramName": "TextureShader",
+            "shapeType": 1,
+            "textureName": "grass",
+            "textureRepeat": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "transform": {
+                "euler": {
+                    "x": 90.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "position": {
+                    "x": 1.0,
+                    "y": -2.610090732574463,
+                    "z": 6.973363399505615
+                },
+                "scale": {
+                    "x": 29.0,
+                    "y": 29.0,
+                    "z": 29.0
+                }
+            }
+        },
+        {
+            "fillType": 6914,
+            "id": 15,
+            "shaderProgramName": "TextureShader",
+            "shapeType": 1,
+            "textureName": "wall",
+            "textureRepeat": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "transform": {
+                "euler": {
+                    "x": 0.0,
+                    "y": -90.0,
+                    "z": -0.0
+                },
+                "position": {
+                    "x": -13.0,
+                    "y": 1.5,
+                    "z": 7.598076820373535
+                },
+                "scale": {
+                    "x": 31.0,
+                    "y": 31.0,
+                    "z": 31.0
+                }
+            }
+        },
+        {
+            "fillType": 6914,
+            "id": 16,
+            "shaderProgramName": "TextureShader",
+            "shapeType": 1,
+            "textureName": "wall",
+            "textureRepeat": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "transform": {
+                "euler": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 20.0
+                },
+                "scale": {
+                    "x": 32.0,
+                    "y": 32.0,
+                    "z": 32.0
+                }
+            }
+        },
+        {
+            "fillType": 6914,
+            "id": 17,
+            "shaderProgramName": "TextureShader",
+            "shapeType": 1,
+            "textureName": "wall",
+            "textureRepeat": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "transform": {
+                "euler": {
+                    "x": 0.0,
+                    "y": -85.0,
+                    "z": 0.0
+                },
+                "position": {
+                    "x": 14.302757263183594,
+                    "y": 0.0,
+                    "z": 7.969557762145996
+                },
+                "scale": {
+                    "x": 32.0,
+                    "y": 32.0,
+                    "z": 32.0
+                }
+            }
+        },
+        {
+            "fillType": 6914,
+            "id": 18,
+            "shaderProgramName": "TextureShader",
+            "shapeType": 1,
+            "textureName": "wall",
+            "textureRepeat": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "transform": {
+                "euler": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": -7.0
+                },
+                "scale": {
+                    "x": 31.0,
+                    "y": 31.0,
+                    "z": 31.0
+                }
+            }
+        }
+    ],
+    "playableObjects": [
+        {
+            "camera": {
+                "aspect": 1.7777777910232544,
+                "far": 100.0,
+                "fov": 90.0,
+                "near": 1.0,
+                "transform": {
+                    "euler": {
+                        "x": 86.10001373291016,
+                        "y": 307.9002380371094,
+                        "z": 0.0
+                    },
+                    "position": {
+                        "x": 5.00551176071167,
+                        "y": 0.27500006556510925,
+                        "z": 3.008107900619507
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                }
+            },
+            "cameraSpeed": 0.10000000149011612,
+            "movementSpeed": 0.10000000149011612,
+            "worldObject": {
+                "fillType": 6914,
+                "id": 11,
+                "shaderProgramName": "KenarShader",
+                "shapeType": 3,
+                "textureName": "container",
+                "textureRepeat": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "transform": {
+                    "euler": {
+                        "x": 176.10000610351563,
+                        "y": 307.9002380371094,
+                        "z": 0.0
+                    },
+                    "position": {
+                        "x": 5.00551176071167,
+                        "y": 0.27500006556510925,
+                        "z": 3.008107900619507
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                }
+            }
+        },
+        {
+            "camera": {
+                "aspect": 1.25,
+                "far": 100.0,
+                "fov": 90.0,
+                "near": 1.0,
+                "transform": {
+                    "euler": {
+                        "x": 39.000205993652344,
+                        "y": -54.20006561279297,
+                        "z": 0.0
+                    },
+                    "position": {
+                        "x": 10.643507957458496,
+                        "y": 8.936222076416016,
+                        "z": -3.8902111053466797
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                }
+            },
+            "cameraSpeed": 0.10000000149011612,
+            "movementSpeed": 0.10000000149011612,
+            "worldObject": {
+                "fillType": 6914,
+                "id": 20,
+                "shaderProgramName": "KenarShader",
+                "shapeType": 3,
+                "textureName": "container",
+                "textureRepeat": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "transform": {
+                    "euler": {
+                        "x": 129.00021362304688,
+                        "y": -54.20006561279297,
+                        "z": 0.0
+                    },
+                    "position": {
+                        "x": 10.643507957458496,
+                        "y": 8.936222076416016,
+                        "z": -3.8902111053466797
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                }
+            }
+        },
+        {
+            "camera": {
+                "aspect": 1.7777777910232544,
+                "far": 100.0,
+                "fov": 90.0,
+                "near": 1.0,
+                "transform": {
+                    "euler": {
+                        "x": 5.899972438812256,
+                        "y": 0.2999533414840698,
+                        "z": 0.0
+                    },
+                    "position": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                }
+            },
+            "cameraSpeed": 0.10000000149011612,
+            "movementSpeed": 0.10000000149011612,
+            "worldObject": {
+                "fillType": 6914,
+                "id": 21,
+                "shaderProgramName": "KenarShader",
+                "shapeType": 3,
+                "textureName": "container",
+                "textureRepeat": {
+                    "x": 1.0,
+                    "y": 1.0
+                },
+                "transform": {
+                    "euler": {
+                        "x": 95.89997100830078,
+                        "y": 0.2999533414840698,
+                        "z": 0.0
+                    },
+                    "position": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                }
+            }
+        }
+    ],
+    "topCamera": 20
+}

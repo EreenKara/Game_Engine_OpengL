@@ -26,14 +26,19 @@ namespace graf
         auto manager = getInstance();
 
         std::string programName = jsonData["ProgramName"].get<std::string>();        
-        std::string vertexShaderName = jsonData["VertexShader"].get<std::string>();        
+        std::string vertexShaderName = jsonData["VertexShader"].get<std::string>();  
         std::string fragmentShaderName = jsonData["FragmentShader"].get<std::string>();        
         auto uniform = jsonData["Uniforms"];        
 
-
+       
         graf::ShaderProgram* shaderProgram = new graf::ShaderProgram();
         shaderProgram->create();
         shaderProgram->attachShader("./shaders/"+vertexShaderName,GL_VERTEX_SHADER);
+         if (jsonData.contains("GeometryShader")) {
+            std::string geometryShaderName = jsonData["GeometryShader"].get<std::string>();
+            shaderProgram->attachShader("./shaders/"+geometryShaderName,GL_GEOMETRY_SHADER);
+
+        } 
         shaderProgram->attachShader("./shaders/"+fragmentShaderName,GL_FRAGMENT_SHADER);
         shaderProgram->link();
         for(auto siradaki:uniform)

@@ -22,6 +22,10 @@ namespace graf
     Transform* Camera::getTransform(){
         return m_transform;
     }
+    void Camera::setTransform(Transform* transform){
+        delete m_transform;
+        m_transform = transform;
+    }
     glm::mat4 Camera::getViewMatrix(){
         auto mtxInvTranslate = glm::translate(glm::mat4(1),-m_transform->getPosition());
         auto mtxInvRotation = glm::inverse(m_transform->getRotationMatrix());
@@ -36,18 +40,20 @@ namespace graf
     // TURN LEFT OR RIGHT
     void Camera::turnLR(float angle)
     {
-        float radians = glm::radians(angle);
         auto euler = m_transform->getEuler();
-        euler.y+=radians;
+        euler.y+=angle;
         m_transform->setEuler(euler);
 
+    }
+    float Camera::getFovInDeggree()
+    {
+        return glm::degrees(m_fov);
     }
     // TURN UP OR DOWN
     void Camera::turnUD(float angle)// TURN LEFT OR RIGHTturnUD(float angle)
     {
-        float radians = glm::radians(angle);
         auto euler = m_transform->getEuler();
-        euler.x+=radians;
+        euler.x+=angle;
         m_transform->setEuler(euler);
     }
     void Camera::setFov(float fovDegree)
@@ -69,5 +75,22 @@ namespace graf
     {
         m_far = far;
         m_projectionMatrix= glm::perspectiveLH(m_fov,m_aspect,m_near,m_far);
+    }
+     float Camera::getFov() const
+    {
+        return glm::degrees(m_fov); 
+    }
+
+     float Camera::getAspect() const
+    {
+        return m_aspect;
+    }
+     float Camera::getNear() const
+    {
+        return m_near;
+    }
+    float Camera::getFar() const
+    {
+        return m_far;
     }
 } // namespace graf

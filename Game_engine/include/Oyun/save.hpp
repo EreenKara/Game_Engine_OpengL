@@ -24,7 +24,7 @@ class Save
 {
 private:
     // std::string m_saveFileNameBinary = "./save_files/oyunDosyasi.erensavebin";
-    std::string m_saveFileName = "base.json";
+    std::string m_saveFileName = "newSave.json";
     static Save* m_Ins;
     Scene* scene;
     static Save* getInstance();
@@ -40,8 +40,10 @@ private:
 
 
     static json vec3ToJson(const glm::vec3& vec);
+    static json vec2ToJson(const glm::vec2& vec);
     static json mat4ToJson(const glm::mat4& mat);
     static glm::vec3 jsonToVec3(const json& j) ;
+    static glm::vec2 jsonToVec2(const json& j) ;
     static glm::mat4 jsonToMat4(const json& j);
 
     static json saveSceneAsJson();

@@ -31,6 +31,14 @@ namespace graf
     {
         GLWindow* pWindow = (GLWindow*)glfwGetWindowUserPointer(window);
          pWindow->m_keyboardFunction(key,scancode,action);
+        if(key==GLFW_KEY_C && action==GLFW_PRESS)
+        {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        }
+        if(key==GLFW_KEY_V && action==GLFW_PRESS)
+        {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        }
     }
     void GLWindow::setKeyboardFunction(KeyboardFunction keyboardFunction)
     {
@@ -65,21 +73,16 @@ namespace graf
         /*
         ImGui ayarlamaları. create context ve init opengl initglfw normalde yeterli.
         */
-        ImGui::CreateContext();
-        ImGuiIO& io = ImGui::GetIO(); (void)io;
-        io.ConfigFlags |=ImGuiConfigFlags_NavEnableKeyboard;
-        io.ConfigFlags |=ImGuiConfigFlags_NavEnableGamepad;
+       ImGui::CreateContext(); 
 
-        ImGui_ImplGlfw_InitForOpenGL(m_window,true);
+        ImGui_ImplGlfw_InitForOpenGL(m_window, true);
         ImGui_ImplOpenGL3_Init("#version 330");
-        ImGui::StyleColorsDark();
-
-        glEnable(GL_DEPTH_TEST); 
+        
+         glEnable(GL_DEPTH_TEST); 
         glfwSetWindowUserPointer(m_window,this);
         glfwSetKeyCallback(m_window,statickeyboardFunction);
-        glfwSetCursorPosCallback(m_window, staticMouseFunction);
-        glfwSetWindowFocusCallback(m_window, staticMouseFcousFunction);
-        
+        // glfwSetCursorPosCallback(m_window, staticMouseFunction);
+
         return 1;
     }
     void GLWindow::setRenderFunction(RenderFunction render)
@@ -99,23 +102,35 @@ namespace graf
 
     void GLWindow::render()
     {
-        while (!glfwWindowShouldClose(m_window))
-        {
-            
-            m_renderFunction();
+         while (!glfwWindowShouldClose(m_window))
+    {
+        // ImGui başlangıcı
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
 
-            ImGui_ImplOpenGL3_NewFrame();
-            ImGui_ImplGlfw_NewFrame();
-            ImGui::NewFrame();
-            m_imguiRenderFunction();
-            ImGui::EndFrame();
-            ImGui::Render();
-            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        // Kullanıcı tanımlı ImGui arayüzü
+        m_imguiRenderFunction();
 
-            glfwSwapBuffers(m_window);
-            glfwPollEvents();
+        ImGui::Render();
+
+        // Kamera ve sahne kontrolleri sadece ImGui girdi istemediğinde yapılır
+        ImGuiIO& io = ImGui::GetIO();
+        if (!io.WantCaptureMouse) {
+            // Eğer ImGui aktif değilse, kullanıcının kontrol fonksiyonları çalışır
+            m_mouseFunction(io.MousePos.x, io.MousePos.y);
         }
-        // Save::saveToFileAsJson();
+
+        // Kullanıcı tanımlı render fonksiyonu
+        m_renderFunction();
+
+        // ImGui sonlandırma
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        // Buffer takası ve olaylar
+        glfwSwapBuffers(m_window);
+        glfwPollEvents();
+    }
     }
     void GLWindow::deleteWindow(){
         glfwDestroyWindow(m_window);

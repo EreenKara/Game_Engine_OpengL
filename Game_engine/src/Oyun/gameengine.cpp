@@ -15,16 +15,16 @@ GameEngine::GameEngine(){
 
     this->createShaderProgram("shader_program.json");
     this->preload();
-    // if (Save::isThereReadableSaveFile())
-    // {
-    //     // kendi set ediyor içinde
-    //     m_scene = Save::readFromFileAsJson();
-    // }
-    // else
-    // {
+    if (Save::isThereReadableSaveFile())
+    {
+        // kendi set ediyor içinde
+        m_scene = Save::readFromFileAsJson();
+    }
+    else
+    {
         m_scene = new Scene();
         Save::setSceneToSave(m_scene);
-    // }
+    }
     
     auto renderFunction = std::bind(&Scene::renderFunction, m_scene);
     auto imguiRenderFunction = std::bind(&Scene::imguiRenderFunction, m_scene);

@@ -13,6 +13,7 @@ namespace graf
         Cube,
         Frustum,
         Pyramid,
+        Cylinder
     };
 
     class ShapeCreator
@@ -33,6 +34,7 @@ namespace graf
         VertexArrayObject* createCube();  
         VertexArrayObject* createFrustum();  
         VertexArrayObject* createPyramid();  
+        VertexArrayObject* createCylinder();  
 
 
         unsigned int m_sizeOfShapeTypes;

@@ -25,6 +25,7 @@ private:
     
     void drawObject(WorldObject* object,PlayableObject* playableObject);
     void deleteWorldObjects();
+    void reset();
 public:
     Scene();
     void addObject(WorldObject* worldObject);

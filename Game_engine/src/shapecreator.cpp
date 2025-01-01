@@ -30,6 +30,9 @@ namespace graf
         case ShapeTypes::Pyramid:           return getInstance()->createPyramid();
             
         case ShapeTypes::Frustum:           return getInstance()->createFrustum();
+
+        case ShapeTypes::Cylinder:          return getInstance()->createCylinder();
+
         default:
             return nullptr;
             break;
@@ -498,6 +501,179 @@ namespace graf
         va->unbind();
         return va;        
     }
+     float pi = 3.14159265358979323846f;
+ VertexArrayObject* ShapeCreator::createCylinder()
+{
+    // Daha önce oluşturulmuşsa tekrar oluşturmayalım
+    if (m_vaoMap.count(ShapeTypes::Cylinder) > 0)
+        return m_vaoMap[ShapeTypes::Cylinder];
+
+    // Silindirin temel parametreleri
+    const int   segmentCount = 36;  
+    const float radius       = 0.5f;
+    const float height       = 1.0f;
+
+    std::vector<Vertex>        vertices;
+    std::vector<unsigned int>  indices;
+
+    // -----------------------
+    // 1) ALT DISK
+    // -----------------------
+    Vertex bottomCenter;
+    bottomCenter.position = glm::vec3(0.0f, -height * 0.5f, 0.0f);
+    bottomCenter.texture  = glm::vec2(0.5f, 0.5f);  // Daire merkezini doku koordinatında (0.5, 0.5) alalım
+    unsigned int bottomCenterIndex = static_cast<unsigned int>(vertices.size());
+    vertices.push_back(bottomCenter);
+
+    // Alt disk çevresi
+    for (int i = 0; i < segmentCount; ++i)
+    {
+        float angle = 2.0f * pi * i / segmentCount;
+        float x = radius * std::cos(angle);
+        float z = radius * std::sin(angle);
+
+        Vertex v;
+        v.position = glm::vec3(x, -height * 0.5f, z);
+
+        // Doku için dairesel koordinat
+        float u = 0.5f + 0.5f * std::cos(angle);
+        float w = 0.5f + 0.5f * std::sin(angle);
+        v.texture = glm::vec2(u, w);
+
+        vertices.push_back(v);
+    }
+
+    // Alt disk indeksleri (fan)
+    for (int i = 0; i < segmentCount; ++i)
+    {
+        unsigned int start = bottomCenterIndex;
+        unsigned int p1 = bottomCenterIndex + 1 + i;
+        unsigned int p2 = bottomCenterIndex + 1 + ((i + 1) % segmentCount);
+
+        indices.push_back(start);
+        indices.push_back(p1);
+        indices.push_back(p2);
+    }
+
+    // -----------------------
+    // 2) ÜST DISK
+    // -----------------------
+    Vertex topCenter;
+    topCenter.position = glm::vec3(0.0f, height * 0.5f, 0.0f);
+    topCenter.texture  = glm::vec2(0.5f, 0.5f);
+    unsigned int topCenterIndex = static_cast<unsigned int>(vertices.size());
+    vertices.push_back(topCenter);
+
+    // Üst disk çevresi
+    for (int i = 0; i < segmentCount; ++i)
+    {
+        float angle = 2.0f * pi * i / segmentCount;
+        float x = radius * std::cos(angle);
+        float z = radius * std::sin(angle);
+
+        Vertex v;
+        v.position = glm::vec3(x, height * 0.5f, z);
+
+        float u = 0.5f + 0.5f * std::cos(angle);
+        float w = 0.5f + 0.5f * std::sin(angle);
+        v.texture = glm::vec2(u, w);
+
+        vertices.push_back(v);
+    }
+
+    // Üst disk indeksleri (fan)
+    for (int i = 0; i < segmentCount; ++i)
+    {
+        unsigned int start = topCenterIndex;
+        unsigned int p1 = topCenterIndex + 1 + i;
+        unsigned int p2 = topCenterIndex + 1 + ((i + 1) % segmentCount);
+
+        indices.push_back(start);
+        indices.push_back(p1);
+        indices.push_back(p2);
+    }
+
+    // -----------------------
+    // 3) SİLİNDİR YAN YÜZEYİ
+    // -----------------------
+    // Yan yüzeyde: segmentCount+1 kadar noktayı (alt+üst) kullanarak “wrap-around” sağlıyoruz
+    unsigned int sideStartIndex = static_cast<unsigned int>(vertices.size());
+
+    for (int i = 0; i <= segmentCount; ++i)
+    {
+        float angle = 2.0f * pi * i / segmentCount;
+        float x = radius * std::cos(angle);
+        float z = radius * std::sin(angle);
+
+        // Alt kenar
+        Vertex vBottom;
+        vBottom.position = glm::vec3(x, -height * 0.5f, z);
+        // Doku koordinatı (u: 0..1), alt => 0
+        vBottom.texture  = glm::vec2(float(i) / float(segmentCount), 0.0f);
+        vertices.push_back(vBottom);
+
+        // Üst kenar
+        Vertex vTop;
+        vTop.position    = glm::vec3(x, height * 0.5f, z);
+        // Doku koordinatı (u: 0..1), üst => 1
+        vTop.texture     = glm::vec2(float(i) / float(segmentCount), 1.0f);
+        vertices.push_back(vTop);
+    }
+
+    // Yan yüzey indeksleri (iki üçgen = bir dikdörtgen şerit)
+    for (int i = 0; i < segmentCount; ++i)
+    {
+        unsigned int bottom1 = sideStartIndex + 2 * i;
+        unsigned int top1    = bottom1 + 1;
+        unsigned int bottom2 = bottom1 + 2;
+        unsigned int top2    = bottom2 + 1;
+
+        // İlk üçgen
+        indices.push_back(bottom1);
+        indices.push_back(top1);
+        indices.push_back(bottom2);
+
+        // İkinci üçgen
+        indices.push_back(bottom2);
+        indices.push_back(top1);
+        indices.push_back(top2);
+    }
+
+    // -----------------------
+    // 4) OPENGL BUFFER OLUŞTURMA
+    // -----------------------
+    VertexArrayObject* va = new VertexArrayObject;
+    VertexBuffer*      vb = new VertexBuffer;
+    IndexBuffer*       ib = new IndexBuffer;
+
+    va->create();
+    va->bind();
+
+    // Verteks verisini GPU’ya yolla
+    vb->create(
+        &vertices[0],
+        sizeof(Vertex) * vertices.size()
+    );
+
+    // Indeks verisini GPU’ya yolla
+    ib->create(
+        &indices[0],
+        indices.size() * sizeof(unsigned int)
+    );
+
+    va->setVertexBuffer(vb);
+    va->setIndexBuffer(ib);
+
+    // Sadece Pozisyon ve Doku koordinatı
+    va->addVertexAttribute(VertexAttributeType::Position);
+    va->addVertexAttribute(VertexAttributeType::Texture);
+
+    va->activateAttributes();
+    m_vaoMap[ShapeTypes::Cylinder] = va;
+    va->unbind();
+
+    return va;
+}
     void ShapeCreator::deleteInstance(){
         if(getInstance() != nullptr)
             delete getInstance();

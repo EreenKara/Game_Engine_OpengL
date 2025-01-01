@@ -12,7 +12,7 @@ class WorldObject // Hocanın model dediği sınıfın bendeki karşılığı
 protected:
     friend class Save;
     void setTransform(graf::Transform* transform);
-    unsigned int id;
+    int id;
     graf::Transform* transform;
     graf::ShapeTypes shapeType;
     std::string textureName;
@@ -21,7 +21,7 @@ protected:
     glm::vec2   textureRepeat;
     unsigned int fillType;
 public:
-    WorldObject(unsigned int id=-1,
+    WorldObject(int id=-1,
                 std::string textureName="container",
                 graf::ShapeTypes shapeType=graf::ShapeTypes::Cube,
                 std::string shaderProgramName= "TextureShader",
@@ -41,6 +41,8 @@ public:
     void save(std::ofstream& ostreamFile);
     unsigned int getId();
     ~WorldObject();
+    void setTextureRepeat(const glm::vec2& repeat);
+
 };
 
 

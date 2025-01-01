@@ -9,7 +9,7 @@
 #include "idcounter.hpp"
 #include "shadermanager.hpp"
 
-WorldObject::WorldObject(unsigned int id,
+WorldObject::WorldObject(int id,
                          std::string textureName,
                          graf::ShapeTypes shapeType,
                          std::string shaderProgramName,
@@ -46,6 +46,7 @@ graf::Transform* WorldObject::getTranform() const
 }
 void WorldObject::setTransform(graf::Transform* transform)
 {
+    delete this->transform;
     this->transform = transform;
 }
 graf::ShaderProgram* WorldObject::getShaderProgram()
@@ -80,6 +81,9 @@ void WorldObject::removeChildObject(WorldObject* worldObject)
     }
 
 }
+void  WorldObject::setTextureRepeat(const glm::vec2& repeat) {
+        this->textureRepeat = repeat;
+    }
 
 glm::vec2& WorldObject::getTextureRepeat()
 {

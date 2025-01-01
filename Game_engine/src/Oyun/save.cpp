@@ -87,7 +87,9 @@ json Save::saveWorldObjectAsJson(WorldObject* wo)
         {"transform", saveTransformAsJson(wo->transform)},
         {"shapeType", static_cast<int>(wo->shapeType)},
         {"textureName", wo->textureName},
-        {"childObjects", json::array()}
+        {"shaderProgramName", wo->shaderProgramName},
+        {"textureRepeat", vec2ToJson(wo->textureRepeat)},
+        {"fillType",wo->fillType}
     };
     // // child objects
     // for (int i = 0; i < wo->childObjects.size(); i++)
@@ -128,7 +130,7 @@ json Save::saveCameraAsJson(graf::Camera* camera)
     json jsonData;
     // glm::vec3 verilerini JSON'e dönüştür
     jsonData["transform"] = saveTransformAsJson(camera->m_transform);
-    jsonData["fov"] = camera->m_fov;
+    jsonData["fov"] = camera->getFovInDeggree();
     jsonData["aspect"] = camera->m_aspect;
     jsonData["near"] = camera->m_near;
     jsonData["far"] = camera->m_far;
@@ -154,63 +156,52 @@ Scene* Save::readSceneFromJson(json jsonDataScene)
     auto manager = getInstance();
     Scene* scene = new Scene();
     IdCounter::reset();
-    for (auto element : scene->playableObjects) {
-        std::cout<<"calisti:"<<element<<std::endl;
-        delete element; // Bellek alanını serbest bırak
-    }
-    scene->playableObjects.clear();
-    for (auto element : scene->m_objects) {
-        std::cout<<"silindi:"<<element<<std::endl;
-        delete element; // Bellek alanını serbest bırak
-    }
-    scene->m_objects.clear();
+    scene->reset();
 
-    unsigned int idMax = -1;
+    
+    int activePlayableObjectId = jsonDataScene["activePlayableObject"];
+    int topCameraId = jsonDataScene["topCamera"];
+    int activeObjectId = jsonDataScene["activeObject"];
+    int idMax = -1;
     for (int i = 0; i < jsonDataScene["playableObjects"].size(); i++)
     {
         PlayableObject* po = readPlayableObjectFromJson(jsonDataScene["playableObjects"][i]);
         idMax = idMax <= po->id ? po->id:idMax ; 
         scene->addPlayableObject(po);
+        if(po->getId() == activePlayableObjectId)
+        {
+            scene->setActivePlayableObject(po);
+        }
+        if(po->getId() == topCameraId)
+        {
+            scene->setTopCamera(po);
+        }
     }
     for (int i = 0; i < jsonDataScene["objects"].size(); i++)
     {
         WorldObject* wo= readWorldObjectFromJson(jsonDataScene["objects"][i]);
         idMax = idMax <= wo->id ? wo->id:idMax ; 
         scene->addObject(wo);
+        if(wo->getId() == activeObjectId)
+        {
+            scene->setActiveObject(wo);
+        }
     }
     IdCounter::setId(idMax);
-    unsigned int activePlayableObjectId = jsonDataScene["activePlayableObject"];
-    unsigned int topCameraId = jsonDataScene["topCamera"];
-    unsigned int activeObjectId = jsonDataScene["activeObject"];
-    
-
-    PlayableObject* activePO =  new PlayableObject(IdCounter::getWorldObjectById(activePlayableObjectId));
-    PlayableObject* topCamera =  new PlayableObject(IdCounter::getWorldObjectById(topCameraId));
-    WorldObject* activeObject = IdCounter::getWorldObjectById(activeObjectId);
-    
-    // PlayableObject* previousActivePO = scene->getActivePlayableObject();
-    // PlayableObject* previousTopCamera = scene->getTopCamera();
-    // WorldObject* previousActiveObject = scene->getActiveObject();
-    
-    scene->setActivePlayableObject(activePO);
-    scene->setTopCamera(topCamera);
-    scene->setActiveObject(activeObject);
-
-    // scene->removeObject(previousActiveObject);
-    // scene->removePlayableObject(previousActivePO);
-    // scene->removePlayableObject(previousTopCamera);
-    
+   
     manager->scene =scene; 
     return scene;
 }
 WorldObject* Save::readWorldObjectFromJson(json jsonDataWO)
 {
 
-    unsigned int id = jsonDataWO["id"];
+    int id = jsonDataWO["id"];
     graf::Transform* transform = readTransformFromJson(jsonDataWO["transform"]);
     graf::ShapeTypes shapeType = static_cast<graf::ShapeTypes>(jsonDataWO["shapeType"]);
     std::string textureName = jsonDataWO["textureName"];
-
+    std::string shaderProgramName = jsonDataWO["shaderProgramName"];
+    glm::vec2 textureRepeat = jsonToVec2(jsonDataWO["textureRepeat"]);
+    unsigned int fillType= jsonDataWO["fillType"];
     // unsigned int* idArr =nullptr;
     // int childObjectSize=0;
     // if (jsonDataWO.contains("childObjects"))
@@ -231,7 +222,7 @@ WorldObject* Save::readWorldObjectFromJson(json jsonDataWO)
     // wofs->obj=new WorldObject(id,textureName,shapeType);
     // wofs->obj->setTransform(transform);
     // return wofs;
-    WorldObject * wo = new WorldObject(id,textureName,shapeType);
+    WorldObject * wo = new WorldObject(id,textureName,shapeType,shaderProgramName,fillType,textureRepeat);
     wo->setTransform(transform);
     
     return wo;
@@ -304,7 +295,19 @@ glm::mat4 Save::jsonToMat4(const json& j) {
     return mat;
 }
 
+json Save::vec2ToJson(const glm::vec2& vec)
+{
+    return json{{"x", vec.x}, {"y", vec.y}};
+    
+}
 
+glm::vec2 Save::jsonToVec2(const json& j)
+{
+    return glm::vec2(
+        j.at("x").get<float>(), 
+        j.at("y").get<float>()
+    );
+}
 
 
 
