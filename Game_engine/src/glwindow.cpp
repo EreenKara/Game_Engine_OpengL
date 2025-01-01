@@ -31,6 +31,14 @@ namespace graf
     {
         GLWindow* pWindow = (GLWindow*)glfwGetWindowUserPointer(window);
          pWindow->m_keyboardFunction(key,scancode,action);
+        if(key==GLFW_KEY_C && action==GLFW_PRESS)
+        {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        }
+        if(key==GLFW_KEY_V && action==GLFW_PRESS)
+        {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        }
     }
     void GLWindow::setKeyboardFunction(KeyboardFunction keyboardFunction)
     {

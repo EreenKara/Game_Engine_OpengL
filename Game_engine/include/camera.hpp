@@ -23,9 +23,11 @@ namespace graf
         void setAspect(float aspect);
         void setNear(float near);
         void setFar(float far);
+        float getFovInDeggree();
         glm::mat4 getViewMatrix();
         glm::mat4 getProjectionMatrix();
         Transform* getTransform();
+        void setTransform(Transform* transform);
         void turnLR(float angle);
         void turnUD(float angle);
         Camera(float fovDegree=90.0f,float aspect=1.78f,float near=1.0f,float far=100.0f,Transform* transform = new Transform());

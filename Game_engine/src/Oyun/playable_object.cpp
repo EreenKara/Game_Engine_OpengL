@@ -8,6 +8,8 @@ PlayableObject::PlayableObject(const WorldObject* wo):
     cameraSpeed= 0.1f;
     m_mouse=new Mouse();
     m_camera =new graf::Camera();
+    this->shapeType=graf::ShapeTypes::Frustum;
+    // this->shaderProgramName="KenarShader";
 }
 
 graf::Camera* PlayableObject::getCamera()
@@ -20,33 +22,33 @@ void PlayableObject::keyboardFunction(int key,int scancode,int action){
     {
         if(key==GLFW_KEY_W)
         {
-            this->transform->moveForward();
             this->m_camera->getTransform()->moveForward();
+            this->transform->setPosition(this->m_camera->getTransform()->getPosition());
         }
         else if(key==GLFW_KEY_S)
         {
-            this->transform->moveBackward();
             this->m_camera->getTransform()->moveBackward();
+            this->transform->setPosition(this->m_camera->getTransform()->getPosition());
         }
         else if(key == GLFW_KEY_A)
         {
-            this->transform->moveLeft();
             this->m_camera->getTransform()->moveLeft();
+            this->transform->setPosition(this->m_camera->getTransform()->getPosition());
         } 
         else if(key == GLFW_KEY_D)
         {
-            this->transform->moveRight();
             this->m_camera->getTransform()->moveRight();
+            this->transform->setPosition(this->m_camera->getTransform()->getPosition());
         }
         else if(key == GLFW_KEY_LEFT_CONTROL)
         {
-            this->transform->moveUp();
             this->m_camera->getTransform()->moveUp();
+            this->transform->setPosition(this->m_camera->getTransform()->getPosition());
         }
         else if(key == GLFW_KEY_LEFT_SHIFT)
         {
-            this->transform->moveDown();
             this->m_camera->getTransform()->moveDown();
+            this->transform->setPosition(this->m_camera->getTransform()->getPosition());
         }
     }
         
@@ -63,8 +65,8 @@ void PlayableObject::mouseFunction(double x, double y){
         double dy = y - m_mouse->getCurrentYpos() ;
         dx= dx* this->cameraSpeed;
         dy= dy*this->cameraSpeed;
-        m_camera->turnLR(dx);
-        m_camera->turnUD(dy);
+        this->turnLR(dx);
+        this->turnUD(dy);
         m_mouse->setCurrentXpos(x);
         m_mouse->setCurrentYpos(y);    
     }
@@ -79,10 +81,25 @@ void PlayableObject::setCameraSpeed(double cameraSpeed)
 }
 void PlayableObject::setCamera(graf::Camera* camera)
 {
+    delete m_camera;
     m_camera= camera;
 }
 
+void PlayableObject::turnLR(float angle)
+{
+    this->m_camera->turnLR(angle);
+    auto euler =this->m_camera->getTransform()->getEuler();
+    this->transform->setEuler(euler);
 
+}
+// TURN UP OR DOWN
+void PlayableObject::turnUD(float angle)// TURN LEFT OR RIGHTturnUD(float angle)
+{
+    this->m_camera->turnUD(angle);
+    auto cameraEuler = this->m_camera->getTransform()->getEuler();
+    cameraEuler.x = cameraEuler.x+90;
+    this->transform->setEuler(cameraEuler);
+}
 
 
 PlayableObject::~PlayableObject(){

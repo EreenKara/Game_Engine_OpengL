@@ -5,7 +5,7 @@
 #include "mouse.hpp"
 
 class Save;
-class PlayableObject:WorldObject
+class PlayableObject:public WorldObject
 {
 private:
     friend Save;
@@ -20,6 +20,8 @@ public:
     void mouseFunction(double xpos,double ypos);
     void setMovementSpeed(double movementSpeed);
     void setCameraSpeed(double cameraSpeed);
+    void turnLR(float angle);
+    void turnUD(float angle);
     PlayableObject(const WorldObject* wo);
     ~PlayableObject();
 };

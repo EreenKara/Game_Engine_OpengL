@@ -128,7 +128,7 @@ json Save::saveCameraAsJson(graf::Camera* camera)
     json jsonData;
     // glm::vec3 verilerini JSON'e dönüştür
     jsonData["transform"] = saveTransformAsJson(camera->m_transform);
-    jsonData["fov"] = camera->m_fov;
+    jsonData["fov"] = camera->getFovInDeggree();
     jsonData["aspect"] = camera->m_aspect;
     jsonData["near"] = camera->m_near;
     jsonData["far"] = camera->m_far;
@@ -154,52 +154,39 @@ Scene* Save::readSceneFromJson(json jsonDataScene)
     auto manager = getInstance();
     Scene* scene = new Scene();
     IdCounter::reset();
-    for (auto element : scene->playableObjects) {
-        std::cout<<"calisti:"<<element<<std::endl;
-        delete element; // Bellek alanını serbest bırak
-    }
-    scene->playableObjects.clear();
-    for (auto element : scene->m_objects) {
-        std::cout<<"silindi:"<<element<<std::endl;
-        delete element; // Bellek alanını serbest bırak
-    }
-    scene->m_objects.clear();
+    scene->reset();
 
+    
+    int activePlayableObjectId = jsonDataScene["activePlayableObject"];
+    int topCameraId = jsonDataScene["topCamera"];
+    int activeObjectId = jsonDataScene["activeObject"];
     int idMax = -1;
     for (int i = 0; i < jsonDataScene["playableObjects"].size(); i++)
     {
         PlayableObject* po = readPlayableObjectFromJson(jsonDataScene["playableObjects"][i]);
         idMax = idMax <= po->id ? po->id:idMax ; 
         scene->addPlayableObject(po);
+        if(po->getId() == activePlayableObjectId)
+        {
+            scene->setActivePlayableObject(po);
+        }
+        if(po->getId() == topCameraId)
+        {
+            scene->setTopCamera(po);
+        }
     }
     for (int i = 0; i < jsonDataScene["objects"].size(); i++)
     {
         WorldObject* wo= readWorldObjectFromJson(jsonDataScene["objects"][i]);
         idMax = idMax <= wo->id ? wo->id:idMax ; 
         scene->addObject(wo);
+        if(wo->getId() == activeObjectId)
+        {
+            scene->setActiveObject(wo);
+        }
     }
     IdCounter::setId(idMax);
-   int activePlayableObjectId = jsonDataScene["activePlayableObject"];
-   int topCameraId = jsonDataScene["topCamera"];
-   int activeObjectId = jsonDataScene["activeObject"];
-    
-
-    PlayableObject* activePO =  new PlayableObject(IdCounter::getWorldObjectById(activePlayableObjectId));
-    PlayableObject* topCamera =  new PlayableObject(IdCounter::getWorldObjectById(topCameraId));
-    WorldObject* activeObject = IdCounter::getWorldObjectById(activeObjectId);
-    
-    // PlayableObject* previousActivePO = scene->getActivePlayableObject();
-    // PlayableObject* previousTopCamera = scene->getTopCamera();
-    // WorldObject* previousActiveObject = scene->getActiveObject();
-    
-    scene->setActivePlayableObject(activePO);
-    scene->setTopCamera(topCamera);
-    scene->setActiveObject(activeObject);
-
-    // scene->removeObject(previousActiveObject);
-    // scene->removePlayableObject(previousActivePO);
-    // scene->removePlayableObject(previousTopCamera);
-    
+   
     manager->scene =scene; 
     return scene;
 }

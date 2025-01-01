@@ -46,6 +46,7 @@ graf::Transform* WorldObject::getTranform() const
 }
 void WorldObject::setTransform(graf::Transform* transform)
 {
+    delete this->transform;
     this->transform = transform;
 }
 graf::ShaderProgram* WorldObject::getShaderProgram()

@@ -22,6 +22,10 @@ namespace graf
     Transform* Camera::getTransform(){
         return m_transform;
     }
+    void Camera::setTransform(Transform* transform){
+        delete m_transform;
+        m_transform = transform;
+    }
     glm::mat4 Camera::getViewMatrix(){
         auto mtxInvTranslate = glm::translate(glm::mat4(1),-m_transform->getPosition());
         auto mtxInvRotation = glm::inverse(m_transform->getRotationMatrix());
@@ -40,6 +44,10 @@ namespace graf
         euler.y+=angle;
         m_transform->setEuler(euler);
 
+    }
+    float Camera::getFovInDeggree()
+    {
+        return glm::degrees(m_fov);
     }
     // TURN UP OR DOWN
     void Camera::turnUD(float angle)// TURN LEFT OR RIGHTturnUD(float angle)

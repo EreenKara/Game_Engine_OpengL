@@ -43,6 +43,22 @@ Scene::Scene(){
     this->addObject(wo);
     wo->getTranform()->setPosition(position);
 }
+void Scene::reset()
+{
+    for (auto element : this->playableObjects) {
+        delete element; // Bellek alanını serbest bırak
+    }
+    this->playableObjects.clear();
+
+    for (auto element : this->m_objects) {
+        delete element; // Bellek alanını serbest bırak
+    }
+    this->m_objects.clear();
+    this->activePlayableObject=nullptr;
+    this->topCamera=nullptr;
+    this->activeObject=nullptr;
+
+}
 WorldObject* Scene::getObject(WorldObject* worldObject)
 {
     auto it = std::find(m_objects.begin(),m_objects.end(),worldObject);
@@ -146,7 +162,16 @@ void Scene::renderFunction(){
     {
         this->drawObject(m_objects.at(i),this->activePlayableObject);
     }
+    for (size_t i = 0; i < this->playableObjects.size(); i++)
+    {
+        if(this->activePlayableObject->getId() != this->playableObjects.at(i)->getId())
+        {
+            this->drawObject(this->playableObjects.at(i),this->activePlayableObject);
+        }
+    }
+    
 
+    
     glClear(GL_DEPTH_BUFFER_BIT); 
 
     glViewport(Settings::getScreenWidth() - Settings::getScreenTopCameraWidth(), Settings::getScreenHeight() - Settings::getScreenTopCameraHeight(), Settings::getScreenTopCameraWidth(), Settings::getScreenTopCameraHeight());
@@ -154,6 +179,13 @@ void Scene::renderFunction(){
     for (size_t i = 0; i < m_objects.size(); i++)
     {
         this->drawObject(m_objects.at(i),this->topCamera);
+    }
+    for (size_t i = 0; i < this->playableObjects.size(); i++)
+    {
+        if(this->topCamera->getId() != this->playableObjects.at(i)->getId())
+        {
+            this->drawObject(this->playableObjects.at(i),this->topCamera);
+        }
     }
     
 }
@@ -177,6 +209,12 @@ void Scene::keyboardFunction(int key,int scancode,int action){
         if(key==GLFW_KEY_0 ) ;
         else if(key==GLFW_KEY_1) ;
 
+        if(key==GLFW_KEY_T && action==GLFW_PRESS)
+        {
+            auto temp = this->activePlayableObject;
+            this->activePlayableObject = this->topCamera;
+            this->topCamera = temp;
+        }
         if(key==GLFW_KEY_O && action==GLFW_PRESS)
         {
             auto scale = activeObject->getTranform()->getScale();
