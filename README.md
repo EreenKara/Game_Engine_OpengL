@@ -2,8 +2,9 @@
 A game engine.
 
 # Libraries
-GLFW,
-GLM,
-IMGUI,
-nlohmann:json,
-stb
+GLFW,  
+GLAD,  
+GLM,  
+IMGUI,  
+nlohmann:json,  
+stb  
