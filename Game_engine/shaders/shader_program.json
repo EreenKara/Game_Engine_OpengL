@@ -46,6 +46,14 @@
             {
                "Name": "uWorldTransform",
                "Type": "mat4"
+            },
+            {
+               "Name": "uInverseRotation",
+               "Type": "mat4"
+            },
+            {
+               "Name": "uTextureRepeat",
+               "Type": "vec2"
             }
          ]
       }

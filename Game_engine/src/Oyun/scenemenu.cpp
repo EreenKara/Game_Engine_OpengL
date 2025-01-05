@@ -296,7 +296,7 @@ if (ImGui::Button("Create Model")) {
             -1,
             selectedTexture,
             selectedShape,
-            "TextureShader",
+            "LightShader",
             1,
             textureRepeat
         );

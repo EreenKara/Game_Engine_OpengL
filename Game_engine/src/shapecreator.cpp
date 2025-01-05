@@ -5,6 +5,8 @@
 #include "vertextypes.hpp"
 namespace graf
 {
+    float pi = 3.14159265358979323846f;
+
     ShapeCreator* ShapeCreator::m_Ins = nullptr;
     
 
@@ -88,6 +90,7 @@ namespace graf
         va->setIndexBuffer(ib);
         va->addVertexAttribute(graf::VertexAttributeType::Position);
         va->addVertexAttribute(graf::VertexAttributeType::Texture);
+        va->addVertexAttribute(VertexAttributeType::Normal);
         va->activateAttributes();
 
         m_vaoMap[ShapeTypes::Circle]= va;
@@ -266,6 +269,7 @@ namespace graf
 
         va->addVertexAttribute(VertexAttributeType::Position);
         va->addVertexAttribute(VertexAttributeType::Texture);
+        va->addVertexAttribute(VertexAttributeType::Normal);
         va->activateAttributes();
         m_vaoMap[ShapeTypes::Frustum] =va;
         va->unbind();
@@ -374,6 +378,7 @@ namespace graf
 
         va->addVertexAttribute(VertexAttributeType::Position);
         va->addVertexAttribute(VertexAttributeType::Texture);
+        va->addVertexAttribute(VertexAttributeType::Normal);
         va->activateAttributes();
         m_vaoMap[ShapeTypes::Pyramid] =va;
         va->unbind();
@@ -386,7 +391,7 @@ namespace graf
             return m_vaoMap[ShapeTypes::Cube];
 
         glm::vec3 positions[] = {  
-            {-0.5f,  0.5f, 0.5f},
+            {-0.5f,  0.5f, 0.5f},   ///0
             { 0.5f,  0.5f, 0.5f},
             { 0.5f, -0.5f, 0.5f},
             {-0.5f, -0.5f, 0.5f},
@@ -409,6 +414,11 @@ namespace graf
         vertices[2].position = positions[2];
         vertices[3].position = positions[3];
 
+        vertices[0].normal = glm::vec3(0.0,0.0,1.0f);
+        vertices[1].normal = glm::vec3(0.0,0.0,1.0f);
+        vertices[2].normal = glm::vec3(0.0,0.0,1.0f);
+        vertices[3].normal = glm::vec3(0.0,0.0,1.0f);
+
         vertices[0].texture = glm::vec2(0.0f,1.0f);
         vertices[1].texture = glm::vec2(1.0f,1.0f);
         vertices[2].texture = glm::vec2(1.0f,0.0f);
@@ -421,6 +431,12 @@ namespace graf
         vertices[6].position = positions[6];
         vertices[7].position = positions[2];
 
+        vertices[4].normal = glm::vec3(1.0f,0.0f,0.0f);
+        vertices[5].normal = glm::vec3(1.0f,0.0f,0.0f);
+        vertices[6].normal = glm::vec3(1.0f,0.0f,0.0f);
+        vertices[7].normal = glm::vec3(1.0f,0.0f,0.0f);
+
+        
         vertices[4].texture = glm::vec2(0.0f,1.0f);
         vertices[5].texture = glm::vec2(1.0f,1.0f);
         vertices[6].texture = glm::vec2(1.0f,0.0f);
@@ -434,6 +450,13 @@ namespace graf
         vertices[10].position = positions[1];
         vertices[11].position = positions[0];
 
+
+        vertices[8].normal = glm::vec3(0.0f,1.0f,0.0f);
+        vertices[9].normal = glm::vec3(0.0f,1.0f,0.0f);
+        vertices[10].normal = glm::vec3(0.0f,1.0f,0.0f);
+        vertices[11].normal = glm::vec3(0.0f,1.0f,0.0f);
+
+
         vertices[8].texture = glm::vec2(0.0f,1.0f);
         vertices[9].texture = glm::vec2(1.0f,1.0f);
         vertices[10].texture = glm::vec2(1.0f,0.0f);
@@ -444,6 +467,11 @@ namespace graf
         vertices[13].position = positions[0];
         vertices[14].position = positions[3];
         vertices[15].position = positions[7];
+
+        vertices[12].normal =  glm::vec3(-1.0f,0.0f,0.0f);
+        vertices[13].normal =  glm::vec3(-1.0f,0.0f,0.0f);
+        vertices[14].normal =  glm::vec3(-1.0f,0.0f,0.0f);
+        vertices[15].normal =  glm::vec3(-1.0f,0.0f,0.0f);
 
         vertices[12].texture = glm::vec2(0.0f,1.0f);
         vertices[13].texture = glm::vec2(1.0f,1.0f);
@@ -456,6 +484,11 @@ namespace graf
         vertices[18].position = positions[7];
         vertices[19].position = positions[6];
 
+        vertices[16].normal = glm::vec3(0.0f,0.0f,-1.0f);
+        vertices[17].normal = glm::vec3(0.0f,0.0f,-1.0f);
+        vertices[18].normal = glm::vec3(0.0f,0.0f,-1.0f);
+        vertices[19].normal = glm::vec3(0.0f,0.0f,-1.0f);
+
         vertices[16].texture = glm::vec2(0.0f,1.0f);
         vertices[17].texture = glm::vec2(1.0f,1.0f);
         vertices[18].texture = glm::vec2(1.0f,0.0f);
@@ -467,10 +500,17 @@ namespace graf
         vertices[22].position = positions[6];
         vertices[23].position = positions[7];
 
+        vertices[20].normal = glm::vec3(0.0f,-1.0f,0.0f);
+        vertices[21].normal = glm::vec3(0.0f,-1.0f,0.0f);
+        vertices[22].normal = glm::vec3(0.0f,-1.0f,0.0f);
+        vertices[23].normal = glm::vec3(0.0f,-1.0f,0.0f);
+
         vertices[20].texture = glm::vec2(0.0f,1.0f);
         vertices[21].texture = glm::vec2(1.0f,1.0f);
         vertices[22].texture = glm::vec2(1.0f,0.0f);
         vertices[23].texture = glm::vec2(0.0f,0.0f);
+
+        
         for(int i=0;i<6;i++)
         {
             indices.push_back(i*4);
@@ -485,9 +525,9 @@ namespace graf
         VertexArrayObject *va = new VertexArrayObject;
         VertexBuffer *vb= new VertexBuffer;
         IndexBuffer *ib = new IndexBuffer;
-
         va->create();
         va->bind();
+
         // vb ve ib'nin create işlemlerinin içerisine bind etme işemi yapmışız bu da otamatik oalrak onların aktif va'ya bağlanmasını sağlar
         vb->create(vertices,sizeof(Vertex)*vertexCount);
         ib->create(indices.data(),indices.size()*sizeof(unsigned int));
@@ -496,12 +536,12 @@ namespace graf
 
         va->addVertexAttribute(VertexAttributeType::Position);
         va->addVertexAttribute(VertexAttributeType::Texture);
+        va->addVertexAttribute(VertexAttributeType::Normal);
         va->activateAttributes();
         m_vaoMap[ShapeTypes::Cube] =va;
         va->unbind();
-        return va;        
+        return va;          
     }
-     float pi = 3.14159265358979323846f;
  VertexArrayObject* ShapeCreator::createCylinder()
 {
     // Daha önce oluşturulmuşsa tekrar oluşturmayalım
@@ -667,6 +707,7 @@ namespace graf
     // Sadece Pozisyon ve Doku koordinatı
     va->addVertexAttribute(VertexAttributeType::Position);
     va->addVertexAttribute(VertexAttributeType::Texture);
+    va->addVertexAttribute(VertexAttributeType::Normal);
 
     va->activateAttributes();
     m_vaoMap[ShapeTypes::Cylinder] = va;

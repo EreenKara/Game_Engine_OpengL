@@ -295,7 +295,10 @@ void Scene::drawObject(WorldObject* object,PlayableObject* playableObject){
     glm::mat4 mtxWorld = object->getTranform()->getWorldMatrix();
     auto viewMatrix = playableObject->getCamera()->getViewMatrix();
     auto projectionMatrix = playableObject->getCamera()->getProjectionMatrix();
+    auto inverseRotationMatrix = glm::inverse(object->getTranform()->getRotationMatrix());
+
     object->getShaderProgram()->setVec2("uTextureRepeat",object->getTextureRepeat());
+    object->getShaderProgram()->setMat4("uInverseRotation",inverseRotationMatrix);
     object->getShaderProgram()->setMat4("uWorldTransform",projectionMatrix*viewMatrix*mtxWorld);
     graf::TextureManager::activateTexture(object->getTextureName());
     va->draw();
