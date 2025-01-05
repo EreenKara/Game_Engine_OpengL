@@ -9,6 +9,46 @@ namespace graf
 
     ShapeCreator* ShapeCreator::m_Ins = nullptr;
     
+    void findNormals(Vertex *vertices,int vertexCount, unsigned int *indices,int indexCount){
+        for (size_t i = 0; i < indexCount; i++)
+        {
+            auto v0 = vertices[indices[i]].position;
+            auto v1 = vertices[indices[i+1]].position;
+            auto v2 = vertices[indices[i+2]].position;
+
+            auto a = v2-v0;
+            auto b = v1-v0;
+            auto normal = glm::cross(a,b);
+            vertices[indices[i]].normal   = -normal;
+            vertices[indices[i+1]].normal = -normal;
+            vertices[indices[i+2]].normal = -normal;
+        }
+    }
+    void averageNormals(Vertex* vertices, int count){
+
+        for (size_t i = 0; i < count; i++)
+        {
+            int normalCount=0;
+            glm::vec3 averageNormal =glm::vec3(0);
+            for (size_t j = 0; j < count; j++)
+            {
+                if(vertices[i].position == vertices[j].position)
+                {
+                    averageNormal += vertices[j].normal;
+                    normalCount++;
+                }
+            }
+
+            averageNormal = averageNormal / (float)normalCount;
+            for (size_t j = 0; j < count; j++)
+            {
+                if(vertices[i].position == vertices[j].position)
+                {
+                    vertices[i].normal = averageNormal;
+                }
+            }
+        }
+    }
 
     ShapeCreator* ShapeCreator::getInstance()
     {
@@ -522,6 +562,9 @@ namespace graf
             indices.push_back(i*4+2);            
         }
 
+
+        // findNormals(vertices,vertexCount,indices.data(),indices.size());
+        // averageNormals(vertices,vertexCount);
         VertexArrayObject *va = new VertexArrayObject;
         VertexBuffer *vb= new VertexBuffer;
         IndexBuffer *ib = new IndexBuffer;
