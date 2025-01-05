@@ -45,6 +45,7 @@ set(Project_Source_Files
             ${Project_Src_Dir}/Oyun/worldobject.cpp
             ${Project_Src_Dir}/Oyun/gameengine.cpp
             ${Project_Src_Dir}/Oyun/scene.cpp
+            ${Project_Src_Dir}/Oyun/scenemenu.cpp
             ${Project_Src_Dir}/Oyun/mouse.cpp
             ${Project_Src_Dir}/Oyun/save.cpp
             ${Project_Src_Dir}/Oyun/idcounter.cpp

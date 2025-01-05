@@ -55,6 +55,7 @@ namespace graf
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,3);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        
 
         m_window = glfwCreateWindow(width, height, "My Title", NULL, NULL);
 
@@ -69,7 +70,8 @@ namespace graf
             std::cout << "Failed to initialize GLAD" << std::endl;
             return -1;
         }  
-
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_REPEAT);
         /*
         ImGui ayarlamaları. create context ve init opengl initglfw normalde yeterli.
         */
@@ -102,35 +104,35 @@ namespace graf
 
     void GLWindow::render()
     {
-         while (!glfwWindowShouldClose(m_window))
-    {
-        // ImGui başlangıcı
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
+        while (!glfwWindowShouldClose(m_window))
+        {
+            // ImGui başlangıcı
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui_ImplGlfw_NewFrame();
+            ImGui::NewFrame();
 
-        // Kullanıcı tanımlı ImGui arayüzü
-        m_imguiRenderFunction();
+            // Kullanıcı tanımlı ImGui arayüzü
+            m_imguiRenderFunction();
 
-        ImGui::Render();
+            ImGui::Render();
 
-        // Kamera ve sahne kontrolleri sadece ImGui girdi istemediğinde yapılır
-        ImGuiIO& io = ImGui::GetIO();
-        if (!io.WantCaptureMouse) {
-            // Eğer ImGui aktif değilse, kullanıcının kontrol fonksiyonları çalışır
-            m_mouseFunction(io.MousePos.x, io.MousePos.y);
+            // Kamera ve sahne kontrolleri sadece ImGui girdi istemediğinde yapılır
+            ImGuiIO& io = ImGui::GetIO();
+            if (!io.WantCaptureMouse) {
+                // Eğer ImGui aktif değilse, kullanıcının kontrol fonksiyonları çalışır
+                m_mouseFunction(io.MousePos.x, io.MousePos.y);
+            }
+
+            // Kullanıcı tanımlı render fonksiyonu
+            m_renderFunction();
+
+            // ImGui sonlandırma
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+            // Buffer takası ve olaylar
+            glfwSwapBuffers(m_window);
+            glfwPollEvents();
         }
-
-        // Kullanıcı tanımlı render fonksiyonu
-        m_renderFunction();
-
-        // ImGui sonlandırma
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-        // Buffer takası ve olaylar
-        glfwSwapBuffers(m_window);
-        glfwPollEvents();
-    }
     }
     void GLWindow::deleteWindow(){
         glfwDestroyWindow(m_window);

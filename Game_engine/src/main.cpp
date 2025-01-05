@@ -1,32 +1,21 @@
 /*
-   Bir sahne ekle.
-   Bu sahne sürekli kayıtlı kalsın.
-   Game sınıfı bize base bir sahen versin.
-   Bu sahne üzerinde kullanıcı istediği işlemleri unity gibi yapsın.
-   Game sınıfı kullanıcı istersen override edebilsin onu da ayarla.
-   Yani base bir game sınıfım olsun. Kamerali bir oynanabilen obje sağlasın felan filan.
-   Ancak şuan hocanın bizden istediği 9 tane şekilli olan oyun base game sınıfı olmasın.
-   Kullanıcı bunu kalıtım alarak yapsın.
-
-   GUI'ın tıklananamama sorununu çöz
-
+  
    Glviewport ile developer penceresi. Oyuncu penceresi yap.
    Ornegin control'e basıcna oyuncu penceresinin camerası hareket etsin alt'a basınca ekranda mosue gözüksün felan.
 
-   Preload texture'u jsondan yap.
-
-   Shaderprogram'ı game ve gameengine arasında ayarla. Singleton'dan çek gerekirse.
-   
    ortak va batch renderin bakabilrisin. draw object içerisinde. 
 
-   shader program'ı sildim gameengine'den bu yüzden scene'i felna ona göre ayarla.
+    Ortak batch kullanımı dediği aynı shader'ı kullanan objeleri belirle. Ortak VA'yı kullananları belirle. 
+    ORtak texture kulalnanları belirle. Bunları ekrana belirli hiyerarşi de çiz. Bir kere texture'ı yükleyince
+    o texture'yi kullanan tüm cisimleri ekrana çizdir.
 
-   
-   
-   
-   mobjects içerisinde silinen şeye ulaşmaya çalışyıor hata veriyor.
-   
-   
+    Normalde çizim yapılırken sadece kullanıcının görebileceği kısım çizdirilir. Arkada kalan kısım çizdirilmez.
+
+    Ekrandaki imgui kapanıp açıldıkta sonra düzgün active object'i göstermiyor onu ayarla.
+    Scene içerisinden Imgui'i çıkartıp daha modüler yap.
+
+
+    Save'den yükelme esnasında cosntructor'ların doğru olup olmadığına ve daha iyi nasıl yapılır ona bak.
 */
 
 

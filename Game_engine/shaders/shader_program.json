@@ -2,42 +2,27 @@
    "shaders": [
       {
          "ProgramName": "TextureShader",
-         "VertexShader": "vertex.glsl",
-         "FragmentShader": "fragment.glsl",
+         "VertexShader": "./default/vertex.glsl",
+         "FragmentShader": "./default/fragment.glsl",
          "Uniforms": [
             {
                "Name": "uWorldTransform",
                "Type": "mat4"
             },
             {
-               "Name" :"uTextureRepeat",
-               "Type" :"vec2"
+               "Name": "uTextureRepeat",
+               "Type": "vec2"
             }
          ]
       },
       {
          "ProgramName": "WhiteShader",
-         "VertexShader": "vertex.glsl",
-         "FragmentShader": "fragmentWhite.glsl",
+         "VertexShader": "./white/vertex.glsl",
+         "FragmentShader": "./white/fragmentWhite.glsl",
          "Uniforms": [
             {
                "Name": "uWorldTransform",
                "Type": "mat4"
-            }
-         ]
-      },
-      {
-         "ProgramName": "TextureRepeatShader",
-         "VertexShader": "vertexRepeat.glsl",
-         "FragmentShader": "fragment.glsl",
-         "Uniforms": [
-            {
-               "Name": "uWorldTransform",
-               "Type": "mat4"
-            },
-            {
-               "Name" :"uTextureRepeat",
-               "Type" :"vec2"
             }
          ]
       },
@@ -50,9 +35,16 @@
             {
                "Name": "uWorldTransform",
                "Type": "mat4"
-            },
+            }
+         ]
+      },
+      {
+         "ProgramName": "LightShader",
+         "VertexShader": "./light/vertex.glsl",
+         "FragmentShader": "./light/fragment.glsl",
+         "Uniforms": [
             {
-               "Name": "inverseProjectionViewMatrix",
+               "Name": "uWorldTransform",
                "Type": "mat4"
             }
          ]
